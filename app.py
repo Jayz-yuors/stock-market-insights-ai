@@ -45,48 +45,42 @@ else:
 
 # ============== GLOBAL CSS + Dev Banner Right ==============
 st.markdown(
-    f"""
+    """
     <style>
-    /* Developer Tag - Sidebar Badge */
-    .dev-ribbon {{
-        position: fixed;
-        left: 18px;
-        top: 250px;
-        background: linear-gradient(90deg, #1a73e8, #00c6ff);
-        padding: 8px 14px;
+    .dev-banner-fixed {
+        position: absolute;
+        top: 110px;   /* under theme toggle */
+        left: 20px;
+        background: linear-gradient(90deg, #0099ff, #00cc99);
+        padding: 8px 18px;
         font-size: 13px;
-        border-radius: 10px;
+        border-radius: 12px;
         font-weight: 600;
         color: white !important;
-        z-index: 999999 !important;
-        box-shadow: 0px 4px 14px rgba(0,0,0,0.35);
-        transition: transform 0.4s ease;
-        animation: slideFade 1.4s ease-out forwards;
-    }}
-
-    .dev-ribbon:hover {{
-        transform: translateX(5px) scale(1.04);
-    }}
-
-    @keyframes slideFade {{
-        0% {{ opacity: 0; transform: translateX(-20px); }}
-        100% {{ opacity: 1; transform: translateX(0); }}
-    }}
-
-    .dev-ribbon a {{
+        z-index: 999999; 
+        animation: fadeIn 1.2s ease-out forwards;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.35);
+    }
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateX(-10px); }
+        100% { opacity: 1; transform: translateX(0px); }
+    }
+    .dev-banner-fixed a {
         color: white !important;
         text-decoration: none;
-    }}
+    }
     </style>
 
-    <div class="dev-ribbon">
-        🚀 Developed by <a href="https://www.linkedin.com/in/jay-keluskar-b17601358" target="_blank">Jay Keluskar</a>
+    <div class="dev-banner-fixed">
+        👨‍💻 Developed by
+        <a href="https://www.linkedin.com/in/jay-keluskar-b17601358"
+           target="_blank">
+           Jay Keluskar
+        </a>
     </div>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
-
-
 
 # ============== HEADER ==============
 st.markdown(
@@ -348,6 +342,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
