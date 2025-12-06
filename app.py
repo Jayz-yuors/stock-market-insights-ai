@@ -43,7 +43,8 @@ else:
     text_color = "#111827"
     accent = "#0077ff"
 
-# ============== GLOBAL CSS + Dev Banner Right ==============
+
+# ============== DEV BANNER IN SIDEBAR ==============
 st.sidebar.markdown(
     """
     <div style="
@@ -66,6 +67,7 @@ st.sidebar.markdown(
     """,
     unsafe_allow_html=True,
 )
+
 
 # ============== HEADER ==============
 st.markdown(
@@ -327,11 +329,3 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
-
-
-
-
-
-
-
-
