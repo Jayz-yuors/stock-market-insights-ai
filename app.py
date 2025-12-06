@@ -11,7 +11,6 @@ from calculations import (
     volatility_and_risk, correlation_analysis,
     compare_companies, get_close_price_column
 )
-from plotting import plot_correlation
 from data_fetcher import get_company_list, run_fetching
 
 
@@ -350,3 +349,4 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
