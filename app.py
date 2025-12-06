@@ -44,30 +44,29 @@ else:
     accent = "#0077ff"
 
 # ============== GLOBAL CSS + Dev Banner Right ==============
-st.markdown(
+st.sidebar.markdown(
     """
     <div style="
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        padding: 10px 18px;
-        border-radius: 10px;
+        margin-top: 12px;
+        padding: 10px 15px;
+        text-align: center;
+        border-radius: 8px;
         background: linear-gradient(90deg, #0099ff, #00cc99);
         font-size: 13px;
         font-weight: 600;
         color: white;
-        z-index: 99999;
-        box-shadow: 0px 4px 12px rgba(0,0,0,0.35);
     ">
-    👨‍💻 Developed by 
-        <a href="https://www.linkedin.com/in/jay-keluskar-b17601358" 
-           target="_blank" style="color:white; text-decoration:none;">
-        Jay Keluskar
+        👨‍💻 Developed by<br>
+        <a href="https://www.linkedin.com/in/jay-keluskar-b17601358"
+           target="_blank"
+           style="color:white; text-decoration:none;">
+            Jay Keluskar
         </a>
     </div>
     """,
     unsafe_allow_html=True,
 )
+
 # ============== HEADER ==============
 st.markdown(
     f"""
@@ -328,6 +327,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
