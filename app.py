@@ -47,42 +47,43 @@ else:
 st.markdown(
     f"""
     <style>
-    /* Developer Ribbon */
-    .dev-banner {{
+    /* Developer Tag - Sidebar Badge */
+    .dev-ribbon {{
         position: fixed;
-        top: 85px;
-        right: 25px;
-        background: linear-gradient(90deg, #2dd4bf, #0ea5e9);
-        padding: 10px 22px;
-        font-size: 14px;
-        color: white;
-        border-radius: 999px;
-        font-weight: bold;
-        z-index: 99999;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.35);
-        opacity: 0;
-        animation: fadeSlide 1.4s ease forwards;
+        left: 18px;
+        top: 250px;
+        background: linear-gradient(90deg, #1a73e8, #00c6ff);
+        padding: 8px 14px;
+        font-size: 13px;
+        border-radius: 10px;
+        font-weight: 600;
+        color: white !important;
+        z-index: 999999 !important;
+        box-shadow: 0px 4px 14px rgba(0,0,0,0.35);
+        transition: transform 0.4s ease;
+        animation: slideFade 1.4s ease-out forwards;
     }}
 
-    @keyframes fadeSlide {{
-        from {{ opacity: 0; transform: translateY(-10px); }}
-        to   {{ opacity: 1; transform: translateY(0); }}
+    .dev-ribbon:hover {{
+        transform: translateX(5px) scale(1.04);
     }}
 
-    .dev-banner a {{
-        color: white;
+    @keyframes slideFade {{
+        0% {{ opacity: 0; transform: translateX(-20px); }}
+        100% {{ opacity: 1; transform: translateX(0); }}
+    }}
+
+    .dev-ribbon a {{
+        color: white !important;
         text-decoration: none;
     }}
     </style>
 
-    <div class="dev-banner">
-        Developed by 
-        <a href="https://www.linkedin.com/in/jay-keluskar-b17601358" target="_blank">
-            Jay Keluskar
-        </a> 🚀
+    <div class="dev-ribbon">
+        🚀 Developed by <a href="https://www.linkedin.com/in/jay-keluskar-b17601358" target="_blank">Jay Keluskar</a>
     </div>
     """,
-    unsafe_allow_html=True,
+    unsafe_allow_html=True
 )
 
 
@@ -347,6 +348,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
