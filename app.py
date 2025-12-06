@@ -55,38 +55,45 @@ st.markdown(
         background-color: {bg_color};
     }}
 
-    /* Developer Banner */
+    /* 🚀 Developer Floating Banner */
     .dev-banner {{
         position: fixed;
-        bottom: 15px;
-        right: -450px;
-        background: linear-gradient(90deg, {accent}, #ff8c42);
-        padding: 10px 22px;
+        bottom: 55px;  /* Lift above Streamlit's Manage App button */
+        right: 25px;
+        background: linear-gradient(90deg, {accent}, #4ade80);
+        padding: 10px 26px;
         font-size: 15px;
-        color: white;
-        border-radius: 999px;
+        color: white !important;
+        border-radius: 50px;
         font-weight: bold;
-        animation: slideOnce 1.2s ease-out forwards;
-        animation-fill-mode: forwards !important;
-        z-index: 9999;
-        box-shadow: 4px 4px 18px rgba(0,0,0,0.35);
+        z-index: 999999; 
+        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.30);
+        transition: all .25s ease-in-out;
+        opacity: 0.95;
     }}
-    @keyframes slideOnce {{
-        0%   {{ right: -450px; opacity: 0; }}
-        100% {{ right: 25px; opacity: 1; }}
+    .dev-banner:hover {{
+        transform: translateY(-3px);
+        opacity: 1;
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.40);
+        cursor: pointer;
+    }}
+    .dev-banner a {{
+        color: white !important;
+        text-decoration: none;
     }}
     </style>
 
     <div class="dev-banner">
         Developed by :
         <a href="https://www.linkedin.com/in/jay-keluskar-b17601358"
-           target="_blank" style="color:white; text-decoration:none;">
+           target="_blank">
            Jay Keluskar
         </a>
     </div>
     """,
     unsafe_allow_html=True,
 )
+
 
 
 # ============== HEADER ==============
@@ -349,5 +356,6 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
