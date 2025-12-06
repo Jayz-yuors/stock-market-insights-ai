@@ -47,48 +47,39 @@ else:
 st.markdown(
     f"""
     <style>
-    body {{
-        background-color: {bg_color};
-        color: {text_color};
-    }}
-    .main {{
-        background-color: {bg_color};
-    }}
-
-    /* 🚀 Developer Floating Banner */
+    /* Developer Ribbon */
     .dev-banner {{
         position: fixed;
-        bottom: 55px;  /* Lift above Streamlit's Manage App button */
+        top: 85px;
         right: 25px;
-        background: linear-gradient(90deg, {accent}, #4ade80);
-        padding: 10px 26px;
-        font-size: 15px;
-        color: white !important;
-        border-radius: 50px;
+        background: linear-gradient(90deg, #2dd4bf, #0ea5e9);
+        padding: 10px 22px;
+        font-size: 14px;
+        color: white;
+        border-radius: 999px;
         font-weight: bold;
-        z-index: 999999; 
-        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.30);
-        transition: all .25s ease-in-out;
-        opacity: 0.95;
+        z-index: 99999;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+        opacity: 0;
+        animation: fadeSlide 1.4s ease forwards;
     }}
-    .dev-banner:hover {{
-        transform: translateY(-3px);
-        opacity: 1;
-        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.40);
-        cursor: pointer;
+
+    @keyframes fadeSlide {{
+        from {{ opacity: 0; transform: translateY(-10px); }}
+        to   {{ opacity: 1; transform: translateY(0); }}
     }}
+
     .dev-banner a {{
-        color: white !important;
+        color: white;
         text-decoration: none;
     }}
     </style>
 
     <div class="dev-banner">
-        Developed by :
-        <a href="https://www.linkedin.com/in/jay-keluskar-b17601358"
-           target="_blank">
-           Jay Keluskar
-        </a>
+        Developed by 
+        <a href="https://www.linkedin.com/in/jay-keluskar-b17601358" target="_blank">
+            Jay Keluskar
+        </a> 🚀
     </div>
     """,
     unsafe_allow_html=True,
@@ -356,6 +347,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
