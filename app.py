@@ -46,42 +46,28 @@ else:
 # ============== GLOBAL CSS + Dev Banner Right ==============
 st.markdown(
     """
-    <style>
-    .dev-banner-fixed {
-        position: absolute;
-        top: 110px;   /* under theme toggle */
+    <div style="
+        position: fixed;
+        bottom: 20px;
         left: 20px;
+        padding: 10px 18px;
+        border-radius: 10px;
         background: linear-gradient(90deg, #0099ff, #00cc99);
-        padding: 8px 18px;
         font-size: 13px;
-        border-radius: 12px;
         font-weight: 600;
-        color: white !important;
-        z-index: 999999; 
-        animation: fadeIn 1.2s ease-out forwards;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.35);
-    }
-    @keyframes fadeIn {
-        0% { opacity: 0; transform: translateX(-10px); }
-        100% { opacity: 1; transform: translateX(0px); }
-    }
-    .dev-banner-fixed a {
-        color: white !important;
-        text-decoration: none;
-    }
-    </style>
-
-    <div class="dev-banner-fixed">
-        👨‍💻 Developed by
-        <a href="https://www.linkedin.com/in/jay-keluskar-b17601358"
-           target="_blank">
-           Jay Keluskar
+        color: white;
+        z-index: 99999;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.35);
+    ">
+    👨‍💻 Developed by 
+        <a href="https://www.linkedin.com/in/jay-keluskar-b17601358" 
+           target="_blank" style="color:white; text-decoration:none;">
+        Jay Keluskar
         </a>
     </div>
     """,
     unsafe_allow_html=True,
 )
-
 # ============== HEADER ==============
 st.markdown(
     f"""
@@ -342,6 +328,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
