@@ -1,4 +1,5 @@
 from mongo_config import get_db
+from insert_companies import insert_companies
 import yfinance as yf
 import pandas as pd
 from datetime import datetime, date, timedelta
@@ -11,108 +12,76 @@ logging.basicConfig(
 )
 
 START_DATE = datetime(2015, 1, 1)
-REQUEST_PAUSE_SEC = 0.5  # small pause for safety
+REQUEST_PAUSE_SEC = 0.5  # small delay to avoid rate limits
 
 
+# 🔥 Auto-insert companies if DB is empty
 def get_company_list():
     db = get_db()
     companies = list(db["companies"].find({}, {"ticker": 1, "_id": 0}))
+
+    if not companies:
+        logging.warning("⚠ No companies found — inserting default list!")
+        insert_companies()
+        companies = list(db["companies"].find({}, {"ticker": 1, "_id": 0}))
+        logging.info("✔ Default companies inserted!")
+
     return [c["ticker"] for c in companies]
 
 
 def get_latest_date(ticker):
-    """
-    Returns the latest datetime stored for this ticker, or None.
-    """
+    """Returns the most recent stored date for a ticker."""
     db = get_db()
     rec = db["stock_prices"].find_one(
         {"ticker": ticker},
         sort=[("date", -1)]
     )
-    return rec["date"] if rec and rec.get("date") else None
+    return rec["date"] if rec else None
 
 
 def fetch_yfinance(ticker, start_date):
     """
-    Fetch daily data from Yahoo Finance from start_date → today.
-    start_date may be datetime or date, we normalize it.
+    Fetch stock data from Yahoo Finance from start_date until today.
     """
+    today = datetime.today()
+
     if isinstance(start_date, datetime):
         start_dt = start_date
-    elif isinstance(start_date, date):
-        start_dt = datetime.combine(start_date, datetime.min.time())
     else:
-        # fallback: try converting
-        start_dt = pd.to_datetime(start_date)
+        start_dt = datetime.combine(start_date, datetime.min.time())
 
-    # If we've already got data up to (or beyond) today, skip
-    today = datetime.today()
+    # If already up to date
     if start_dt.date() >= today.date():
-        logging.info(f"{ticker}: already up to date, skipping fetch.")
+        logging.info(f"{ticker}: already updated — skipping")
         return None
 
-    start_str = start_dt.strftime("%Y-%m-%d")
-    logging.info(f"{ticker}: fetching from {start_str}...")
+    logging.info(f"{ticker}: fetching data from {start_dt.date()}...")
 
     df = yf.download(
         ticker,
-        start=start_str,
+        start=start_dt.strftime("%Y-%m-%d"),
         interval="1d",
         auto_adjust=True,
-        progress=False,
+        progress=False
     )
 
     if df.empty:
-        logging.warning(f"{ticker}: Yahoo returned EMPTY dataframe.")
+        logging.warning(f"{ticker}: No data returned from Yahoo")
         return None
 
-    logging.info(f"{ticker}: fetched {len(df)} rows from Yahoo.")
+    logging.info(f"{ticker}: fetched {len(df)} rows")
     return df
 
 
 def insert_prices(df, ticker):
     """
-    Insert or update prices in MongoDB.
-    Handles Series/scalar values safely.
+    Insert fetched data into MongoDB using upsert.
     """
     db = get_db()
     sp = db["stock_prices"]
 
-    # Ensure datetime index
     df = df.copy()
     df.index = pd.to_datetime(df.index, errors="coerce")
-
-    def safe_float(v):
-        # scalar numbers
-        if isinstance(v, (int, float)):
-            return float(v)
-        # pandas Series (e.g., from multi-index)
-        if isinstance(v, pd.Series):
-            v = v.dropna()
-            if not v.empty:
-                return float(v.iloc[0])
-            return None
-        # try generic conversion
-        try:
-            return float(v)
-        except (TypeError, ValueError):
-            return None
-
-    def safe_int(v):
-        # scalar numbers
-        if isinstance(v, (int, float)):
-            return int(v)
-        # pandas Series
-        if isinstance(v, pd.Series):
-            v = v.dropna()
-            if not v.empty:
-                return int(v.iloc[0])
-            return 0
-        # generic
-        try:
-            return int(v)
-        except (TypeError, ValueError):
-            return 0
 
     count = 0
     for ts, row in df.iterrows():
@@ -124,11 +93,11 @@ def insert_prices(df, ticker):
         doc = {
             "ticker": ticker,
             "date": trade_dt,
-            "open": safe_float(row.get("Open")),
-            "high": safe_float(row.get("High")),
-            "low": safe_float(row.get("Low")),
-            "close": safe_float(row.get("Close")),
-            "volume": safe_int(row.get("Volume")),
+            "open": float(row.get("Open", 0) or 0),
+            "high": float(row.get("High", 0) or 0),
+            "low": float(row.get("Low", 0) or 0),
+            "close": float(row.get("Close", 0) or 0),
+            "volume": int(row.get("Volume", 0) or 0),
         }
 
         sp.update_one(
@@ -138,34 +107,24 @@ def insert_prices(df, ticker):
         )
         count += 1
 
-    logging.info(f"{ticker}: inserted/updated {count} rows in MongoDB.")
+    logging.info(f"{ticker}: inserted/updated {count} rows")
 
 
 def run_fetching():
     """
-    Incremental updater:
-    - For each ticker, find last stored date.
-    - Fetch only data AFTER that date.
-    - If no data, fetch from START_DATE.
-    Safe to call from Streamlit (cached) and from CLI.
+    Update only missing days for each ticker — always safe to call.
     """
     tickers = get_company_list()
-    logging.info(f"Updating stock data for {len(tickers)} companies...")
+    logging.info(f"🔄 Updating stock DB for {len(tickers)} companies...")
 
     for ticker in tickers:
         last_dt = get_latest_date(ticker)
-
-        if last_dt:
-            start_date = last_dt + timedelta(days=1)
-        else:
-            start_date = START_DATE
+        start_date = last_dt + timedelta(days=1) if last_dt else START_DATE
 
         df = fetch_yfinance(ticker, start_date)
         if df is not None:
             insert_prices(df, ticker)
-        else:
-            logging.info(f"{ticker}: no new data to insert.")
 
         time.sleep(REQUEST_PAUSE_SEC)
 
-    logging.info("✨ Stock data auto-update completed.")
+    logging.info("✨ Stock data update finished!")
