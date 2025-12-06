@@ -1,0 +1,10 @@
+streamlit
+pandas
+pymongo
+alpha_vantage
+yfinance
+matplotlib
+plotly
+python-dateutil
+numpy
+pytz
