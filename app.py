@@ -4,7 +4,7 @@ import numpy as np
 from datetime import datetime, date
 import plotly.graph_objects as go
 import plotly.express as px
-
+from plotting import plot_correlation
 from calculations import (
     fetch_prices, fetch_current_price, fetch_company_info,
     compute_sma, compute_ema, detect_abrupt_changes,
@@ -349,4 +349,5 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
