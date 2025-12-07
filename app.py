@@ -370,17 +370,15 @@ with tab4:
     st.subheader("Compare Price Trends & Correlation")
 
     if len(selected_companies) >= 2:
-
-        # Fetch merged & normalized data
         merged = compare_companies(selected_companies, start_date, end_date)
 
         st.markdown("### 📈 Normalized Price Comparison")
 
-        # 🟦 Plotly Line Chart (Restored)
+        # Plotly Multi-Line Chart (Restored Correctly)
         fig = go.Figure()
         for ticker in selected_companies:
             fig.add_trace(go.Scatter(
-                x=merged["trade_date"],
+                x=merged.index,
                 y=merged[ticker],
                 mode="lines",
                 name=ticker
@@ -390,22 +388,25 @@ with tab4:
             xaxis_title="Date",
             yaxis_title="Normalized Price",
             legend_title="Companies",
+            title="Price Comparison Across Selected Stocks",
             height=500,
-            margin=dict(l=0, r=0, t=40, b=0),
-            title="Price Comparison Across Selected Stocks"
+            margin=dict(l=0, r=0, t=40, b=0)
         )
         st.plotly_chart(fig, use_container_width=True)
 
-        # 📥 Download Normalized Data
-        download_csv(merged, "normalized_comparison_data")
+        # CSV Download
+        download_csv(
+            merged.reset_index(),
+            "normalized_price_comparison"
+        )
 
         st.markdown("### 🔢 Correlation Matrix")
 
         corr = correlation_analysis(selected_companies)
         st.dataframe(corr.style.background_gradient(cmap="coolwarm"))
 
-        # 🔥 Heatmap Plot (kept as is)
         plot_correlation(corr)
+
 
 # ============== TAB 5 — Smart Insights ==============
 with tab5:
@@ -476,6 +477,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
