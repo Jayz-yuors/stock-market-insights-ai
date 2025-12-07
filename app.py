@@ -200,217 +200,114 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 
 
 # ============== TAB 1 — Price Trends + Indicators ==============
+# ============== TAB 1 — Price Trends + Indicators ==============
 with tab1:
-    st.subheader("Price Trend + Technical Indicators")
+    st.subheader("📈 Price Trend + Technical Indicators")
 
-    if date_valid:
-        view_mode = st.radio(
-            "Indicator view mode",
-            ["Overlay on main chart", "Separate indicator panels"],
-            horizontal=True,
-        )
+    view_mode = st.radio(
+        "Indicator Display Mode",
+        ["Overlay on Chart", "Separate Panels"],
+        horizontal=True,
+    )
 
-        ma_options = {
-            "20 SMA": "SMA_20",
-            "50 SMA": "SMA_50",
-            "200 SMA": "SMA_200",
-            "20 EMA": "EMA_20",
-            "50 EMA": "EMA_50",
-        }
+    ma_options = {
+        "20 SMA": "SMA_20",
+        "50 SMA": "SMA_50",
+        "200 SMA": "SMA_200",
+        "20 EMA": "EMA_20",
+        "50 EMA": "EMA_50",
+    }
 
-        overlay_selected = st.multiselect(
-            "Moving averages",
-            list(ma_options.keys()),
-            default=["20 SMA", "50 SMA"],
-            help="These can be overlayed or shown in separate panels based on the mode above.",
-        )
+    overlay_selected = st.multiselect(
+        "Select Moving Averages",
+        list(ma_options.keys()),
+        default=["20 SMA", "50 SMA"]
+    )
 
-        osc_options = ["RSI (14)", "MACD"]
-        osc_selected = st.multiselect(
-            "Oscillator panels (separate charts)",
-            osc_options,
-            default=["RSI (14)"],
-        )
+    osc_options = ["RSI (14)", "MACD"]
+    osc_selected = st.multiselect(
+        "Oscillators (separate charts)",
+        osc_options,
+        default=["RSI (14)"]
+    )
 
-        for ticker in selected_companies:
-            df = fetch_prices(ticker, start_date, end_date)
+    for ticker in selected_companies:
+        df = fetch_prices(ticker, start_date, end_date)
+        if df is None or df.empty:
+            continue
 
-            if df is None or df.empty:
-                st.warning(f"No data for {ticker}")
-                continue
+        df = add_technical_indicators(df)
+        col_close = get_close_price_column(df)
 
-            # Rich indicators (SMAs, EMAs, RSI, MACD, Golden Cross)
-            df = add_technical_indicators(df)
-            col_close = get_close_price_column(df)
+        st.markdown(f"### 📌 {ticker}")
+        st.metric("Latest Close Price", f"₹ {df[col_close].iloc[-1]:.2f}")
 
-            st.markdown(f"### 📌 {ticker}")
-            st.metric("Latest Close Price", f"₹ {df[col_close].iloc[-1]:.2f}")
+        if view_mode == "Overlay on Chart":
 
-            if view_mode == "Overlay on main chart":
-                fig = go.Figure()
-                fig.add_trace(
-                    go.Scatter(
-                        x=df["trade_date"],
-                        y=df[col_close],
-                        mode="lines",
-                        name="Close Price",
-                    )
-                )
+            fig = go.Figure()
 
-                for label in overlay_selected:
-                    col = ma_options[label]
-                    if col in df.columns:
-                        fig.add_trace(
-                            go.Scatter(
-                                x=df["trade_date"],
-                                y=df[col],
-                                mode="lines",
-                                name=label,
-                            )
-                        )
+            # Close Price Line
+            fig.add_trace(go.Scatter(
+                x=df.trade_date,
+                y=df[col_close],
+                name="Close Price",
+                mode="lines"
+            ))
 
-                # Golden Cross markers (where 50SMA > 200SMA for example)
-                if "Golden_Cross" in df.columns and df["Golden_Cross"].sum() > 0:
-                    cross_points = df[df["Golden_Cross"] == 1]
-                    fig.add_trace(
-                        go.Scatter(
-                            x=cross_points["trade_date"],
-                            y=cross_points[col_close],
-                            mode="markers",
-                            marker=dict(size=8, symbol="triangle-up"),
-                            name="Golden Cross",
-                        )
-                    )
+            # Add SMA/EMA overlays
+            for label in overlay_selected:
+                col = ma_options[label]
+                if col in df.columns:
+                    fig.add_trace(go.Scatter(
+                        x=df.trade_date,
+                        y=df[col],
+                        name=label,
+                        mode="lines"
+                    ))
 
-                fig.update_layout(
-                    title=f"{ticker} — Price + Selected Moving Averages",
-                    height=450,
-                    margin=dict(l=0, r=0, t=40, b=0),
-                    legend=dict(
-                        orientation="h",
-                        yanchor="bottom",
-                        y=1.02,
-                        xanchor="left",
-                        x=0,
-                        title="Legend"
-                    ),
-                    xaxis_title="Date",
-                    yaxis_title="Price (₹)",
-                )
-                st.plotly_chart(fig, use_container_width=True)
+            fig.update_layout(
+                title=f"{ticker} — Price + Indicators",
+                height=500,
+                margin=dict(t=80, b=10),
+                legend=dict(
+                    title="Indicators",
+                    orientation="h",
+                    yanchor="bottom",
+                    y=1.10,
+                    xanchor="center",
+                    x=0.5,
+                ),
+                xaxis_title="Date",
+                yaxis_title="Price (₹)"
+            )
 
-            else:  # Separate panels mode
-                # Base price-only chart
-                st.markdown("#### 🟦 Price Trend (Close)")
-                price_fig = go.Figure()
-                price_fig.add_trace(
-                    go.Scatter(
-                        x=df["trade_date"],
-                        y=df[col_close],
-                        mode="lines",
-                        name="Close Price",
-                    )
-                )
-                price_fig.update_layout(
-                    title=f"{ticker} — Price Only",
-                    height=350,
-                    margin=dict(l=0, r=0, t=40, b=0),
-                    xaxis_title="Date",
-                    yaxis_title="Price (₹)",
-                )
-                st.plotly_chart(price_fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True)
 
-                # One MA per panel
-                for label in overlay_selected:
-                    col = ma_options[label]
-                    if col not in df.columns:
-                        continue
+        else:  # Separate Panels Mode
 
-                    st.markdown(f"#### 📊 {label} vs Price")
-                    ma_fig = go.Figure()
-                    ma_fig.add_trace(
-                        go.Scatter(
-                            x=df["trade_date"],
-                            y=df[col_close],
-                            mode="lines",
-                            name="Close Price",
-                        )
-                    )
-                    ma_fig.add_trace(
-                        go.Scatter(
-                            x=df["trade_date"],
-                            y=df[col],
-                            mode="lines",
-                            name=label,
-                        )
-                    )
-                    ma_fig.update_layout(
-                        title=f"{ticker} — {label}",
-                        height=300,
-                        margin=dict(l=0, r=0, t=40, b=0),
-                        xaxis_title="Date",
-                        yaxis_title="Price (₹)",
-                    )
-                    st.plotly_chart(ma_fig, use_container_width=True)
+            st.markdown("#### 📌 Close Price")
+            st.line_chart(df.set_index("trade_date")[col_close], height=350)
 
-            # --- Oscillator panels (same for both modes) ---
-            if "RSI (14)" in osc_selected and "RSI_14" in df.columns:
-                st.markdown("#### 🔄 RSI (14)")
-                rsi_fig = go.Figure()
-                rsi_fig.add_trace(
-                    go.Scatter(
-                        x=df["trade_date"],
-                        y=df["RSI_14"],
-                        mode="lines",
-                        name="RSI (14)",
-                    )
-                )
-                rsi_fig.add_hrect(y0=30, y1=70,
-                                  fillcolor="rgba(100,100,100,0.08)",
-                                  line_width=0)
-                rsi_fig.update_layout(
-                    title=f"{ticker} — RSI (14)",
-                    height=250,
-                    margin=dict(l=0, r=0, t=40, b=0),
-                    xaxis_title="Date",
-                    yaxis_title="RSI",
-                    yaxis=dict(range=[0, 100]),
-                )
-                st.plotly_chart(rsi_fig, use_container_width=True)
+            for label in overlay_selected:
+                col = ma_options[label]
+                if col in df.columns:
+                    st.markdown(f"#### 📊 {label}")
+                    st.line_chart(df.set_index("trade_date")[[col_close, col]], height=300)
 
-            if "MACD" in osc_selected and "MACD" in df.columns:
-                st.markdown("#### 📉 MACD Indicator")
-                macd_fig = go.Figure()
-                macd_fig.add_trace(
-                    go.Scatter(
-                        x=df["trade_date"],
-                        y=df["MACD"],
-                        mode="lines",
-                        name="MACD",
-                    )
-                )
-                if "MACD_signal" in df.columns:
-                    macd_fig.add_trace(
-                        go.Scatter(
-                            x=df["trade_date"],
-                            y=df["MACD_signal"],
-                            mode="lines",
-                            name="Signal",
-                        )
-                    )
-                macd_fig.update_layout(
-                    title=f"{ticker} — MACD",
-                    height=250,
-                    margin=dict(l=0, r=0, t=40, b=0),
-                    xaxis_title="Date",
-                    yaxis_title="MACD",
-                )
-                st.plotly_chart(macd_fig, use_container_width=True)
+        # Oscillators (always separate)
+        if "RSI (14)" in osc_selected:
+            st.markdown("#### 🔄 RSI (14)")
+            st.line_chart(df.set_index("trade_date")["RSI_14"], height=250)
 
-            # 📥 Download all indicator data for this ticker
-            with st.expander("📄 View & Download underlying data"):
-                st.dataframe(df, use_container_width=True)
-                download_csv(df, f"{ticker}_indicators")
+        if "MACD" in osc_selected:
+            st.markdown("#### 📉 MACD Indicator")
+            st.line_chart(df.set_index("trade_date")["MACD"], height=250)
+
+        # Download Button for Data
+        with st.expander("📄 View & Download Data"):
+            st.dataframe(df, use_container_width=True)
+            download_csv(df, f"{ticker}_indicators")
+
 
 
 # ============== TAB 2 — Improved Abrupt Changes ==============
@@ -554,3 +451,4 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
