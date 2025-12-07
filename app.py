@@ -369,18 +369,43 @@ with tab3:
 with tab4:
     st.subheader("Compare Price Trends & Correlation")
 
-    if len(selected_companies) >= 2 and date_valid:
+    if len(selected_companies) >= 2:
+
+        # Fetch merged & normalized data
         merged = compare_companies(selected_companies, start_date, end_date)
-        if merged is not None and not merged.empty:
-            st.markdown("### Normalized Price Comparison")
-            st.line_chart(merged, use_container_width=True)
+
+        st.markdown("### 📈 Normalized Price Comparison")
+
+        # 🟦 Plotly Line Chart (Restored)
+        fig = go.Figure()
+        for ticker in selected_companies:
+            fig.add_trace(go.Scatter(
+                x=merged["trade_date"],
+                y=merged[ticker],
+                mode="lines",
+                name=ticker
+            ))
+
+        fig.update_layout(
+            xaxis_title="Date",
+            yaxis_title="Normalized Price",
+            legend_title="Companies",
+            height=500,
+            margin=dict(l=0, r=0, t=40, b=0),
+            title="Price Comparison Across Selected Stocks"
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
+        # 📥 Download Normalized Data
+        download_csv(merged, "normalized_comparison_data")
+
+        st.markdown("### 🔢 Correlation Matrix")
 
         corr = correlation_analysis(selected_companies)
-        if corr is not None and not corr.empty:
-            st.markdown("### Correlation Matrix")
-            st.dataframe(corr.style.background_gradient(cmap="coolwarm"))
-            plot_correlation(corr)
+        st.dataframe(corr.style.background_gradient(cmap="coolwarm"))
 
+        # 🔥 Heatmap Plot (kept as is)
+        plot_correlation(corr)
 
 # ============== TAB 5 — Smart Insights ==============
 with tab5:
@@ -451,5 +476,6 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
