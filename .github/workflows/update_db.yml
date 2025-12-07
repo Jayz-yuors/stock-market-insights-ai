@@ -2,8 +2,7 @@ name: Daily Database Update
 
 on:
   schedule:
-    # 04:00 UTC = 09:30 AM IST (Daily)
-    - cron: "0 4 * * *"
+    - cron: "30 4 * * *"  # 10:00 AM IST (after NSE closes)
   workflow_dispatch:
 
 jobs:
@@ -24,19 +23,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Configure MongoDB Secrets
-      run: echo "Secrets loaded!"
-      env:
-        MONGO_URI: ${{ secrets.MONGODB_URI }}
-        MONGO_USER: ${{ secrets.MONGODB_USERNAME }}
-        MONGO_PASS: ${{ secrets.MONGODB_PASSWORD }}
-        MONGO_DBNAME: ${{ secrets.MONGODB_DBNAME }}
+    - name: Add Repo to PYTHONPATH
+      run: |
+        echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
 
     - name: Run Daily Stock Update
       env:
-        MONGO_URI: ${{ secrets.MONGODB_URI }}
         MONGO_USER: ${{ secrets.MONGODB_USERNAME }}
         MONGO_PASS: ${{ secrets.MONGODB_PASSWORD }}
         MONGO_DBNAME: ${{ secrets.MONGODB_DBNAME }}
+        MONGO_URI: ${{ secrets.MONGODB_URI }}
       run: |
         python injection/update_db_daily.py
