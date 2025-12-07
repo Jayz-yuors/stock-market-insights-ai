@@ -282,7 +282,7 @@ with tab1:
             )
 
             st.plotly_chart(fig, use_container_width=True)
-
+            download_csv(df, f"{ticker}_overlay_data")
         else:  # Separate Panels Mode
 
             st.markdown("#### 📌 Close Price")
@@ -451,4 +451,5 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
