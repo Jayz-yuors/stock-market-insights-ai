@@ -15,6 +15,29 @@ START_DATE = datetime(2015, 1, 1)
 REQUEST_PAUSE_SEC = 0.5  # small delay to avoid rate limits
 
 
+# 🔹 Safe numeric conversion helpers
+def safe_float(v):
+    try:
+        if isinstance(v, (int, float)):
+            return float(v)
+        if hasattr(v, "iloc"):  # pandas Series
+            return float(v.dropna().iloc[0])
+        return float(v)
+    except:
+        return None
+
+
+def safe_int(v):
+    try:
+        if isinstance(v, (int, float)):
+            return int(v)
+        if hasattr(v, "iloc"):
+            return int(v.dropna().iloc[0])
+        return int(float(v))
+    except:
+        return 0
+
+
 # 🔥 Auto-insert companies if DB is empty
 def get_company_list():
     db = get_db()
@@ -50,12 +73,11 @@ def fetch_yfinance(ticker, start_date):
     else:
         start_dt = datetime.combine(start_date, datetime.min.time())
 
-    # If already up to date
     if start_dt.date() >= today.date():
-        logging.info(f"{ticker}: already updated — skipping")
+        logging.info(f"{ticker}: Already updated — skipping fetch")
         return None
 
-    logging.info(f"{ticker}: fetching data from {start_dt.date()}...")
+    logging.info(f"{ticker}: Fetching from {start_dt.date()}...")
 
     df = yf.download(
         ticker,
@@ -66,10 +88,10 @@ def fetch_yfinance(ticker, start_date):
     )
 
     if df.empty:
-        logging.warning(f"{ticker}: No data returned from Yahoo")
+        logging.warning(f"{ticker}: 🚫 Yahoo returned no data")
         return None
 
-    logging.info(f"{ticker}: fetched {len(df)} rows")
+    logging.info(f"{ticker}: ✔ {len(df)} rows downloaded")
     return df
 
 
@@ -107,7 +129,7 @@ def insert_prices(df, ticker):
         )
         count += 1
 
-    logging.info(f"{ticker}: inserted/updated {count} rows")
+    logging.info(f"{ticker}: 🔄 {count} rows inserted/updated")
 
 
 def run_fetching():
@@ -115,7 +137,7 @@ def run_fetching():
     Update only missing days for each ticker — always safe to call.
     """
     tickers = get_company_list()
-    logging.info(f"🔄 Updating stock DB for {len(tickers)} companies...")
+    logging.info(f"🚀 Updating stock DB for {len(tickers)} companies...")
 
     for ticker in tickers:
         last_dt = get_latest_date(ticker)
@@ -127,5 +149,4 @@ def run_fetching():
 
         time.sleep(REQUEST_PAUSE_SEC)
 
-    logging.info("✨ Stock data update finished!")
-
+    logging.info("✨ Stock DB sync complete!")
