@@ -93,11 +93,11 @@ def insert_prices(df, ticker):
         doc = {
             "ticker": ticker,
             "date": trade_dt,
-            "open": float(row.get("Open", 0) or 0),
-            "high": float(row.get("High", 0) or 0),
-            "low": float(row.get("Low", 0) or 0),
-            "close": float(row.get("Close", 0) or 0),
-            "volume": int(row.get("Volume", 0) or 0),
+            "open": safe_float(row.get("Open")),
+            "high": safe_float(row.get("High")),
+            "low": safe_float(row.get("Low")),
+            "close": safe_float(row.get("Close")),
+            "volume": safe_int(row.get("Volume")),
         }
 
         sp.update_one(
@@ -128,3 +128,4 @@ def run_fetching():
         time.sleep(REQUEST_PAUSE_SEC)
 
     logging.info("✨ Stock data update finished!")
+
