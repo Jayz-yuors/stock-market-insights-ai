@@ -2,58 +2,55 @@ from mongo_config import get_db
 from insert_companies import insert_companies
 import yfinance as yf
 import pandas as pd
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 import logging
 import time
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO,
+                    format="%(asctime)s - %(levelname)s - %(message)s")
 
 START_DATE = datetime(2015, 1, 1)
-REQUEST_PAUSE_SEC = 0.5  # small delay to avoid rate limits
+REQUEST_PAUSE_SEC = 0.3
+SAFETY_LOOKBACK_DAYS = 7    # <-- Important Recovery Feature
 
 
-# 🔹 Safe numeric conversion helpers
+# ---------------------------------
+# NUMERIC FIXERS
+# ---------------------------------
 def safe_float(v):
     try:
-        if isinstance(v, (int, float)):
-            return float(v)
-        if hasattr(v, "iloc"):  # pandas Series
-            return float(v.dropna().iloc[0])
-        return float(v)
+        return float(v) if v is not None else None
     except:
         return None
 
 
 def safe_int(v):
     try:
-        if isinstance(v, (int, float)):
-            return int(v)
-        if hasattr(v, "iloc"):
-            return int(v.dropna().iloc[0])
-        return int(float(v))
+        return int(float(v)) if v is not None else 0
     except:
         return 0
 
 
-# 🔥 Auto-insert companies if DB is empty
+# ---------------------------------
+# COMPANY LIST AUTO-SETUP
+# ---------------------------------
 def get_company_list():
     db = get_db()
     companies = list(db["companies"].find({}, {"ticker": 1, "_id": 0}))
 
     if not companies:
-        logging.warning("⚠ No companies found — inserting default list!")
+        logging.warning("⚠ No companies found — inserting defaults")
         insert_companies()
         companies = list(db["companies"].find({}, {"ticker": 1, "_id": 0}))
-        logging.info("✔ Default companies inserted!")
+        logging.info("✔ Default companies inserted")
 
     return [c["ticker"] for c in companies]
 
 
+# ---------------------------------
+# HELPER: MOST RECENT DATE IN DB
+# ---------------------------------
 def get_latest_date(ticker):
-    """Returns the most recent stored date for a ticker."""
     db = get_db()
     rec = db["stock_prices"].find_one(
         {"ticker": ticker},
@@ -62,59 +59,53 @@ def get_latest_date(ticker):
     return rec["date"] if rec else None
 
 
+# ---------------------------------
+# FETCH DATA
+# ---------------------------------
 def fetch_yfinance(ticker, start_date):
-    """
-    Fetch stock data from Yahoo Finance from start_date until today.
-    """
-    today = datetime.today()
+    today = datetime.now()
 
-    if isinstance(start_date, datetime):
-        start_dt = start_date
-    else:
-        start_dt = datetime.combine(start_date, datetime.min.time())
-
-    if start_dt.date() >= today.date():
-        logging.info(f"{ticker}: Already updated — skipping fetch")
+    if start_date.date() >= today.date():
+        logging.info(f"{ticker}: Already updated — no fetch needed")
         return None
 
-    logging.info(f"{ticker}: Fetching from {start_dt.date()}...")
+    logging.info(f"{ticker}: Fetching from {start_date.date()} ...")
 
     df = yf.download(
         ticker,
-        start=start_dt.strftime("%Y-%m-%d"),
+        start=start_date.strftime("%Y-%m-%d"),
+        end=today.strftime("%Y-%m-%d"),
         interval="1d",
         auto_adjust=True,
-        progress=False
+        progress=False,
+        threads=True,
     )
 
     if df.empty:
-        logging.warning(f"{ticker}: 🚫 Yahoo returned no data")
+        logging.warning(f"{ticker}: 🚫 No new data from Yahoo!")
         return None
 
-    logging.info(f"{ticker}: ✔ {len(df)} rows downloaded")
+    df.index = pd.to_datetime(df.index, utc=False)
+    logging.info(f"{ticker}: ✔ {len(df)} days fetched")
+
     return df
 
 
+# ---------------------------------
+# INSERT INTO DB
+# ---------------------------------
 def insert_prices(df, ticker):
-    """
-    Insert fetched data into MongoDB using upsert.
-    """
     db = get_db()
     sp = db["stock_prices"]
-
-    df = df.copy()
-    df.index = pd.to_datetime(df.index, errors="coerce")
 
     count = 0
     for ts, row in df.iterrows():
         if pd.isna(ts):
             continue
 
-        trade_dt = ts.to_pydatetime()
-
         doc = {
             "ticker": ticker,
-            "date": trade_dt,
+            "date": ts.to_pydatetime(),
             "open": safe_float(row.get("Open")),
             "high": safe_float(row.get("High")),
             "low": safe_float(row.get("Low")),
@@ -123,7 +114,7 @@ def insert_prices(df, ticker):
         }
 
         sp.update_one(
-            {"ticker": ticker, "date": trade_dt},
+            {"ticker": ticker, "date": doc["date"]},
             {"$set": doc},
             upsert=True
         )
@@ -132,21 +123,30 @@ def insert_prices(df, ticker):
     logging.info(f"{ticker}: 🔄 {count} rows inserted/updated")
 
 
+# ---------------------------------
+# MAIN UPDATE CALL
+# ---------------------------------
 def run_fetching():
-    """
-    Update only missing days for each ticker — always safe to call.
-    """
     tickers = get_company_list()
-    logging.info(f"🚀 Updating stock DB for {len(tickers)} companies...")
+    logging.info(f"🚀 Syncing DB for {len(tickers)} tickers")
+
+    today = datetime.now().date()
 
     for ticker in tickers:
         last_dt = get_latest_date(ticker)
-        start_date = last_dt + timedelta(days=1) if last_dt else START_DATE
+
+        # Fallback: first full fetch
+        if not last_dt:
+            start_date = START_DATE
+        else:
+            # Always fetch extra 7-days → repairs missing gaps
+            start_date = (last_dt - timedelta(days=SAFETY_LOOKBACK_DAYS))
 
         df = fetch_yfinance(ticker, start_date)
+
         if df is not None:
             insert_prices(df, ticker)
 
         time.sleep(REQUEST_PAUSE_SEC)
 
-    logging.info("✨ Stock DB sync complete!")
+    logging.info("✨ Daily DB Sync Complete!")
