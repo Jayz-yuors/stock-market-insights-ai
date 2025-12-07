@@ -2,7 +2,7 @@ name: Daily Database Update
 
 on:
   schedule:
-    - cron: "00 3 * * *"   # 08:30 AM IST = 03:00 UTC
+    - cron: "0 3 * * *"  # 03:00 UTC = 08:30 IST
   workflow_dispatch:
 
 jobs:
@@ -20,25 +20,21 @@ jobs:
 
     - name: Install Dependencies
       run: |
-        cd $GITHUB_WORKSPACE
-        python -m pip install --upgrade pip
+        pip install --upgrade pip
         pip install -r requirements.txt
 
     - name: Set Environment Variables
       env:
-        MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-        MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
-        MONGODB_DBNAME: ${{ secrets.MONGODB_DBNAME }}
-        MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      run: |
-        echo "✔ MongoDB secrets loaded"
+        MONGO_USER: ${{ secrets.MONGODB_USERNAME }}
+        MONGO_PASS: ${{ secrets.MONGODB_PASSWORD }}
+        MONGO_DBNAME: ${{ secrets.MONGODB_DBNAME }}
+        MONGO_URI: ${{ secrets.MONGODB_URI }}
+      run: echo "Environment vars injected."
 
     - name: Run Daily Stock Update
       env:
-        MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-        MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
-        MONGODB_DBNAME: ${{ secrets.MONGODB_DBNAME }}
-        MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      run: |
-        cd $GITHUB_WORKSPACE
-        python injection/update_db_daily.py
+        MONGO_USER: ${{ secrets.MONGODB_USERNAME }}
+        MONGO_PASS: ${{ secrets.MONGODB_PASSWORD }}
+        MONGO_DBNAME: ${{ secrets.MONGODB_DBNAME }}
+        MONGO_URI: ${{ secrets.MONGODB_URI }}
+      run: python injection/update_db_daily.py
