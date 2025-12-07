@@ -384,14 +384,23 @@ with tab4:
                 name=ticker
             ))
 
+        
         fig.update_layout(
             xaxis_title="Date",
             yaxis_title="Normalized Price",
-            legend_title="Companies",
             title="Price Comparison Across Selected Stocks",
-            height=500,
-            margin=dict(l=0, r=0, t=40, b=0)
+            height=550,
+            margin=dict(l=0, r=0, t=40, b=80),
+            legend=dict(
+                orientation="h",
+                yanchor="top",
+                y=-0.15,  # Below chart
+                xanchor="center",
+                x=0.5,
+                title=None
+            )
         )
+
         st.plotly_chart(fig, use_container_width=True)
 
         # CSV Download
@@ -477,6 +486,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
