@@ -2,12 +2,12 @@ name: Daily Database Update
 
 on:
   schedule:
-    - cron: "30 4 * * *" # 10:00 AM IST
+    # Run at 10:00 AM IST → 04:30 UTC
+    - cron: "30 4 * * *"
   workflow_dispatch:
 
 jobs:
   update-db:
-    name: Update MongoDB Stock Data
     runs-on: ubuntu-latest
 
     steps:
