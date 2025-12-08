@@ -1,10 +1,9 @@
 import os
 import sys
 
-# Ensure root project folder is in Python path
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-ROOT_DIR = os.path.dirname(CURRENT_DIR)
-sys.path.append(ROOT_DIR)
+# Ensure repo root is available in import path
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, ROOT_DIR)
 
 from data_fetcher import run_fetching
 
