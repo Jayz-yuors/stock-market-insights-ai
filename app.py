@@ -103,16 +103,36 @@ selected_companies = st.sidebar.multiselect(
 if not selected_companies:
     st.warning("Select at least one company.")
     st.stop()
+MIN_DATE = date(2015, 1, 1)
+UI_MAX_DATE = date(date.today().year, 12, 31)  # Full year visible
 
-min_date = date(2015, 1, 1)
-max_date = datetime.today().date()
-start_date = st.sidebar.date_input("Start Date", min_date)
-end_date = st.sidebar.date_input("End Date", max_date)
+# Sidebar selectors (no future data issue)
+start_date = st.sidebar.date_input(
+    "Start Date",
+    value=MIN_DATE,
+    min_value=MIN_DATE,
+    max_value=UI_MAX_DATE
+)
 
-date_valid = True
+end_date = st.sidebar.date_input(
+    "End Date",
+    value=date.today(),
+    min_value=MIN_DATE,
+    max_value=UI_MAX_DATE
+)
+
+# 🛑 Validate dates
 if start_date >= end_date:
-    st.sidebar.error("Start date must be earlier than end date.")
-    date_valid = False
+    st.sidebar.error("Start date must be earlier than End Date.")
+    st.stop()
+
+# ✂ Clip to today if future month/day selected
+TODAY = date.today()
+if end_date > TODAY:
+    end_date = TODAY
+
+# Safe flag for downstream tabs
+date_valid = True
 
 
 # ============== Helper Functions ==============
@@ -486,6 +506,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
