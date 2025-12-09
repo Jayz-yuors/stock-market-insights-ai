@@ -220,7 +220,68 @@ def download_csv(df: pd.DataFrame, name: str):
         file_name=f"{name}.csv",
         mime="text/csv",
     )
+# ============== TAB HOVER TOOLTIPS (CSS) ==============
+st.markdown("""
+<style>
+/* Make each tab act as a tooltip anchor */
+div[data-baseweb="tab-list"] > div[data-baseweb="tab"] {
+    position: relative;
+}
 
+/* General tooltip style (hidden by default) */
+div[data-baseweb="tab-list"] > div[data-baseweb="tab"]::after {
+    position: absolute;
+    background: #020617;
+    color: #e5e7eb;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    line-height: 1.4;
+    white-space: normal;
+    max-width: 260px;
+    top: 115%;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease-out;
+    z-index: 9999;
+}
+
+/* Show tooltip only on hover */
+div[data-baseweb="tab-list"] > div[data-baseweb="tab"]:hover::after {
+    opacity: 1;
+}
+
+/* === Individual tab texts (order matters) === */
+
+/* 1️⃣ Price Trends */
+div[data-baseweb="tab-list"] > div[data-baseweb="tab"]:nth-child(1)::after {
+    content: "View historical price charts, SMA/EMA lines and technical indicators like RSI & MACD for selected Nifty50 stocks.";
+}
+
+/* 2️⃣ Abrupt Changes */
+div[data-baseweb="tab-list"] > div[data-baseweb="tab"]:nth-child(2)::after {
+    content: "Detect sudden jumps and crashes in daily returns using a configurable % change threshold.";
+}
+
+/* 3️⃣ Risk & Volatility */
+div[data-baseweb="tab-list"] > div[data-baseweb="tab"]:nth-child(3)::after {
+    content: "Analyse rolling volatility and a custom risk index to understand how stable or risky each stock has been.";
+}
+
+/* 4️⃣ Compare & Correlate */
+div[data-baseweb="tab-list"] > div[data-baseweb="tab"]:nth-child(4)::after {
+    content: "Compare multiple stocks on a normalized scale and explore their correlation matrix & heatmap.";
+}
+
+/* 5️⃣ Smart Insights */
+div[data-baseweb="tab-list"] > div[data-baseweb="tab"]:nth-child(5)::after {
+    content: "Get signal labels, confidence levels and projected buy/sell zones based on recent price trends.";
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ============== TABS ==============
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
@@ -519,6 +580,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
