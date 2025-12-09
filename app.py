@@ -237,6 +237,7 @@ with tab1:
     # === Info Box for Tab 1 ===
     # === Improved Detailed Info Box for Tab 1 ===
     # === Modern 2x2 Grid Info Box for Tab 1 ===
+    # === Modern 2x2 Grid Info Box for Tab 1 ===
     st.markdown("""
     <div style="
         display: grid;
@@ -283,7 +284,7 @@ with tab1:
             border-radius:8px;
             color:#c9e8ff;
         ">
-            <strong>📈 SMA/EMA — Trend Direction</strong><br>
+            <strong>📈 SMA / EMA — Trend Direction</strong><br>
             • Price above MA → Bullish strength<br>
             • Price below MA → Bearish caution<br>
             • Short-term SMAs react faster to change
@@ -305,7 +306,7 @@ with tab1:
     
     </div>
     
-    <!-- Why this matters section -->
+    <!-- Why this matters -->
     <div style="
         background:rgba(0,180,216,0.05);
         border-left:4px solid #00b4d8;
@@ -315,11 +316,13 @@ with tab1:
         color:#aee6ff;
     ">
         <strong>🎯 Why this matters?</strong><br>
-        These tools help you build <strong>trend-following strategies</strong> and
-        understand <strong>market psychology</strong> — giving you clarity on when to
-        <strong>enter</strong> and <strong>exit</strong> a stock with confidence.
+        Helps build <strong>trend-following strategies</strong> and understand
+        <strong>market psychology</strong> — guiding accurate <strong>entry</strong>
+        and <strong>exit</strong> decisions with confidence.
     </div>
+    
     """, unsafe_allow_html=True)
+
 
     view_mode = st.radio(
         "Indicator Display Mode",
@@ -603,6 +606,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
