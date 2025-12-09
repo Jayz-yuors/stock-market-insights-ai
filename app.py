@@ -664,49 +664,68 @@ with tab4:
 
 # ============== TAB 5 — Smart Insights ==============
 with tab5:
-    st.subheader("🧠 Smart Insights, Opportunities & Forecast")
 # ================= TAB 5 – Smart Insights Info Box ================= #
+    # ========== Header ==========
     st.markdown("""
-    <div style="
-        margin-top:12px;
-        padding:18px 20px;
-        border-radius:10px;
-        background:rgba(0, 255, 200, 0.06);
-        border:1px solid rgba(0,255,200,0.25);
-    ">
-        <h4 style="color:#fafafa; margin:0 0 10px 0;">
-            🤖 What happens in Smart Insights?
-        </h4>
+    <h2 style='color:#00ffe0; text-align:left; font-weight:700;'>
+        🧠 Smart Insights, Opportunities & Forecast
+    </h2>
+    """, unsafe_allow_html=True)
 
-        <ul style="color:#b9fff4; font-size:15px; line-height:1.55; margin-top:0;">
-            <li>Uses <strong>AI Trend Confidence</strong> to label Buy / Hold / Risky</li>
-            <li>Shows <strong>future trend projection</strong> from recent price behavior</li>
-            <li>Highlights <strong>future Buy & Sell zones</strong> clearly on chart</li>
-            <li>Estimates <strong>shares you can buy</strong> based on your budget</li>
-            <li>Boosts <strong>timing skills</strong> to avoid buying at wrong moments</li>
+    # ========== Info Card ==========
+    smart_info = """
+    <div style="
+        background:rgba(0,255,200,0.06);
+        border:1px solid rgba(0,255,200,0.25);
+        border-radius:12px;
+        padding:18px 20px;
+        margin-bottom:18px;
+    ">
+        <p style="color:#fafafa; font-size:17px; font-weight:600; margin:0 0 10px 0;">
+            🤖 What happens in Smart Insights?
+        </p>
+
+        <ul style="color:#c8fff8; font-size:15px; line-height:1.55; margin-top:0;">
+            <li>Labels stock confidence → <strong>Buy / Hold / Risky</strong></li>
+            <li>Draws <strong>future price projections</strong> from trend math</li>
+            <li>Marks <strong>future Buy & Sell zones</strong> 📍</li>
+            <li>Calculates <strong>shares fitting your budget</strong> 💰</li>
+            <li>Improves <strong>entry & exit timing</strong> ⏱️</li>
         </ul>
 
-        <hr style="border:0.5px solid rgba(0,255,200,0.25); margin:10px 0;">
+        <div style="border-top:1px solid rgba(0,255,200,0.25); margin:10px 0;"></div>
 
-        <strong style="color:#7affec; font-size:15.5px;">
+        <p style="color:#7affec; font-size:15px; font-weight:600; margin:0;">
             🎯 Why this matters?
-        </strong>
-        <div style="color:#a6fff5; font-size:15px; margin-top:6px;">
-            Helps build <strong>high-confidence predictions</strong> and avoid emotional decisions —
-            giving clarity on <strong>when to enter</strong> and <strong>when to exit</strong> smartly.
-        </div>
+        </p>
+
+        <p style="color:#a6fff5; font-size:15px; margin:4px 0 0 0;">
+            Prevents emotional trades — gives clarity on
+            when to <strong>enter</strong> and <strong>exit</strong> confidently.
+        </p>
     </div>
-    """, unsafe_allow_html=True)
+    """
+
+    st.markdown(smart_info, unsafe_allow_html=True)
+
+    # ========== Controls ==========
     budget_vals, budget_labels = build_budget_options()
     col_a, col_b, col_c = st.columns(3)
+
     with col_a:
-        budget_label = st.selectbox("Budget", budget_labels, index=4)
+        budget_label = st.selectbox("Budget", budget_labels, index=4, key="budget_tab5")
         budget = budget_vals[budget_labels.index(budget_label)]
+
     with col_b:
-        horizon = st.radio("Type", ["Short Term", "Long Term"], horizontal=True)
+        horizon = st.radio("Type", ["Short Term", "Long Term"], horizontal=True, key="horizon_tab5")
+
     with col_c:
         forecast_window = 15 if horizon == "Short Term" else 60
-        st.metric("Forecast Window", f"{forecast_window} days")
+        st.metric("Forecast Window", f"{forecast_window} days", help="Prediction length")
+
+
+    # ========== Forecast Logic ==========
+    # (YOUR EXISTING FORECAST LOOP GOES HERE, unchanged)
 
     st.caption(
         "Based on DB trends — Not financial advice. "
@@ -762,6 +781,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
