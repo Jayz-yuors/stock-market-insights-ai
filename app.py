@@ -665,36 +665,40 @@ with tab4:
 # ============== TAB 5 — Smart Insights ==============
 with tab5:
     st.subheader("🧠 Smart Insights, Opportunities & Forecast")
-# ================= TAB 5 – Smart Insights Info Box =================
+# ================= TAB 5 – Smart Insights Info Box ================= #
     st.markdown(f"""
     <div style="
-        margin-top:10px;
-        padding:20px;
+        margin-top:15px;
+        padding:20px 24px;
         border-radius:12px;
-        background:rgba(0, 255, 200, 0.06);
-        border:1px solid rgba(0,255,200,0.23);
+        background:rgba(0, 255, 200, 0.05);
+        border:1px solid rgba(0,255,200,0.20);
     ">
-        <h4 style="color:{text_color}; margin-top:0;">🤖 What happens in Smart Insights?</h4>
     
-        <ul style="color:#b9fff4; font-size:15px; line-height:1.55;">
-            <li>Uses <strong>AI Trend Confidence</strong> to classify a stock as Buy / Hold / Risky</li>
-            <li>Shows <strong>future price projection</strong> using real trend math</li>
-            <li>Highlights <strong>future Buy & Sell zones</strong> with clear markers</li>
-            <li>Estimates <strong>how many shares you can buy</strong> based on budget</li>
-            <li>Great for learning timing strategies with risk-aware thinking</li>
+        <h4 style="color:{text_color}; margin-top:0; margin-bottom:8px;">
+            🤖 What happens in Smart Insights?
+        </h4>
+    
+        <ul style="color:#b9fff4; font-size:15px; line-height:1.60; margin-top:0;">
+            <li>Uses <strong>AI Trend Confidence</strong> to label a stock as Buy / Hold / Risky</li>
+            <li>Plots short-term <strong>future price projection</strong> using trend math</li>
+            <li>Detects <strong>future Buy / Sell zones</strong> with chart markers</li>
+            <li>Estimates <strong>how many shares</strong> you can buy with your budget</li>
+            <li>Great for learning <strong>smart timing and risk-aware analysis</strong></li>
         </ul>
     
-        <hr style="border:0.5px solid rgba(0,255,200,0.15); margin:10px 0;">
+        <div style="border-top:1px solid rgba(0,255,200,0.18); margin:10px 0 12px 0;"></div>
     
-        <strong style="color:#72ffe8;">🎯 Why this matters?</strong><br>
-        <span style="color:#a6fff5;">
-            You learn how indicators combine together to form a
-            <strong>high-confidence prediction</strong> of the market —
-            helping you think like smart investors & avoid emotional decisions.
+        <strong style="color:#7affec; font-size:15.5px;">🎯 Why this matters?</strong><br>
+        <span style="color:#a6fff5; font-size:15px;">
+            Helps build <strong>high-confidence predictions</strong> and avoid emotional
+            decisions — giving clarity on <strong>when to enter</strong> and
+            <strong>when to exit</strong> a trade — just like smart investors do.
         </span>
     
     </div>
     """, unsafe_allow_html=True)
+
 
     budget_vals, budget_labels = build_budget_options()
     col_a, col_b, col_c = st.columns(3)
@@ -761,6 +765,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
