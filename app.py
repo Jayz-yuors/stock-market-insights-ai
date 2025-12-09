@@ -243,7 +243,7 @@ with tab1:
         padding:14px 18px;
         border-radius:8px;
         margin-top:4px;
-        margin-bottom:22px;
+        margin-bottom:16px;
         font-size:15px;
         line-height:1.55;
         color:#c9e8ff;
@@ -253,7 +253,6 @@ with tab1:
     ✔ Compare price with <strong>Moving Averages (SMA/EMA)</strong> to detect trend direction<br>
     ✔ Use <strong>RSI</strong> to find overbought & oversold zones (momentum strength)<br>
     ✔ Use <strong>MACD</strong> to confirm trend reversals & breakout signals<br><br>
-    
     <strong>🧠 Quick Trading Concepts Explained:</strong><br>
     • <b>SMA/EMA:</b> Helps you check if the stock is trending UP or DOWN 📈📉<br>
     &emsp;▫ Price ↑ above MA → Bullish zone → good momentum<br>
@@ -554,6 +553,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
