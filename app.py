@@ -442,46 +442,41 @@ with tab1:
 # ============== TAB 2 — Improved Abrupt Changes ==============
 with tab2:
     st.subheader("Sudden Price Jumps & Falls ✨")
-    # === TAB-2 INFO — Sudden Price Jumps & Falls ===
-    # 💡 Info Box (Right-Aligned)
+    # 🔶 Main Info Box (Right Aligned)
     st.markdown(f"""
     <div style="
-        background:rgba(255,255,255,0.04);
-        border:1px solid rgba(0,180,216,0.25);
-        padding:14px 20px;
+        background:rgba(255,136,0,0.08);
+        border:1px solid rgba(255,180,50,0.4);
         border-radius:10px;
+        padding:12px 18px;
         text-align:right;
         font-size:14.5px;
-        line-height:1.55;
+        line-height:1.45;
         color:{text_color};
-        margin-bottom:18px;
+        margin:0px 0px 14px 0px;
     ">
-        ⚡ Sudden price swings often occur when <strong>breaking news</strong> impacts sentiment,
-        <strong>big institutions</strong> move money, or <strong>volume spikes sharply</strong>.<br><br>
-        🚀 Strong upward moves with high volume can signal <strong>early breakout momentum</strong>.<br><br>
-        📉 Sharp drops may indicate <strong>fear selling</strong>, <strong>high volatility</strong>,
-        or a <strong>trend reversal</strong> — stay alert.
+        ⚡ Sudden price swings occur due to <strong>breaking news</strong>,
+        <strong>big-money trades</strong>, or <strong>volume spikes</strong>.<br>
+        🚀 Upward jumps with strength → potential <strong>early breakout</strong>.<br>
+        📉 Sharp drops → fear selling & <strong>trend reversal</strong> risk.
     </div>
 
-    <!-- Why This Matters -->
+    <!-- 🎯 Why it matters -->
     <div style="
-        background:rgba(0,180,216,0.08);
-        border-left:4px solid #00b4d8;
-        padding:14px 18px;
+        background:rgba(255,136,0,0.07);
+        border-left:4px solid #ff8800;
         border-radius:8px;
-        margin-top:8px;
-        color:#c9e8ff;
+        padding:10px 16px;
         text-align:left;
         font-size:14.5px;
-        line-height:1.55;
+        line-height:1.45;
+        color:{text_color};
     ">
         <strong>🎯 Why this matters?</strong><br>
-        Detecting these moves early helps identify <strong>breakout opportunities</strong>
-        or escape <strong>fast-falling trends</strong> before damage happens 🚀📉.
+        Spot <strong>breakout chances</strong> early or protect yourself before
+        <strong>fast crashes</strong> cause damage 🚀📉.
     </div>
     """, unsafe_allow_html=True)
-
-
     threshold_pct = st.slider("Threshold (%)", 3, 20, 7) / 100
 
     for ticker in selected_companies:
@@ -654,6 +649,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
