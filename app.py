@@ -18,11 +18,11 @@ from data_fetcher import get_company_list, run_fetching
 
 # ============== BASIC PAGE CONFIG ==============
 st.set_page_config(
-    page_title="📈 Stocks Insights",
+    page_title="AI Stock Insights & Learning Platform - Nifty50 Analysis",
+    page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
 # ============== THEME TOGGLE ==============
 if "theme" not in st.session_state:
     st.session_state["theme"] = "Dark"
@@ -71,16 +71,15 @@ st.sidebar.markdown(
 
 # ============== HEADER ==============
 # ============== SEO META TAGS ==============
-st.markdown("""
-    <head>
-        <title>AI Stock Insights & Learning Platform | Nifty50 Analytics</title>
-        <meta name="description" content="AI-powered stock insights with educational guidance. Analyze Nifty50 stocks with indicators like RSI, MACD, SMA, risk, volatility & correlation.">
-        <meta name="keywords" content="Stock Market, Nifty50, AI Stock Analysis, Learn Trading, RSI, MACD, SMA, Volatility, Forecasting, Stock Correlation">
-        <meta property="og:title" content="AI-Powered Stock Insights & Learning Platform">
-        <meta property='og:description' content='Understand stock indicators with real-time NSE analytics & AI trends'>
-    </head>
-""", unsafe_allow_html=True)
+# Inject Essential SEO Meta Tags
+meta_tags = """
+<meta name="description" content="AI-powered stock insights with educational trading guidance. Analyze Nifty50 stocks with SMA, EMA, RSI, MACD, volatility & correlations.">
+<meta name="keywords" content="Stock Market India, Nifty50, Trading Education, Stock Analysis Tools, RSI, MACD, SMA, Volatility, Investing India">
+<meta property="og:title" content="AI Stock Insights & Learning Platform">
+<meta property="og:description" content="Learn stock trading indicators visually using AI-powered NSE analytics.">
+"""
 
+st.markdown(meta_tags, unsafe_allow_html=True)
 
 # ============== AUTO UPDATE ==============
 @st.cache_resource(ttl=24 * 60 * 60)
@@ -508,6 +507,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
