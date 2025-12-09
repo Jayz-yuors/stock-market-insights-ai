@@ -666,39 +666,50 @@ with tab4:
 with tab5:
     st.subheader("🧠 Smart Insights, Opportunities & Forecast")
 # ================= TAB 5 – Smart Insights Info Box ================= #
-    st.markdown(f"""
-    <div style="
-        margin-top:15px;
-        padding:20px 24px;
-        border-radius:12px;
-        background:rgba(0, 255, 200, 0.05);
-        border:1px solid rgba(0,255,200,0.20);
-    ">
-    
-        <h4 style="color:{text_color}; margin-top:0; margin-bottom:8px;">
-            🤖 What happens in Smart Insights?
-        </h4>
-    
-        <ul style="color:#b9fff4; font-size:15px; line-height:1.60; margin-top:0;">
-            <li>Uses <strong>AI Trend Confidence</strong> to label a stock as Buy / Hold / Risky</li>
-            <li>Plots short-term <strong>future price projection</strong> using trend math</li>
-            <li>Detects <strong>future Buy / Sell zones</strong> with chart markers</li>
-            <li>Estimates <strong>how many shares</strong> you can buy with your budget</li>
-            <li>Great for learning <strong>smart timing and risk-aware analysis</strong></li>
-        </ul>
-    
-        <div style="border-top:1px solid rgba(0,255,200,0.18); margin:10px 0 12px 0;"></div>
-    
-        <strong style="color:#7affec; font-size:15.5px;">🎯 Why this matters?</strong><br>
-        <span style="color:#a6fff5; font-size:15px;">
-            Helps build <strong>high-confidence predictions</strong> and avoid emotional
-            decisions — giving clarity on <strong>when to enter</strong> and
-            <strong>when to exit</strong> a trade — just like smart investors do.
-        </span>
-    
-    </div>
-    """, unsafe_allow_html=True)
+    # --- Info box about this tab ---
+    st.markdown(
+        """
+        <div style="
+            margin-top:15px;
+            padding:20px 24px;
+            border-radius:12px;
+            background:rgba(0, 255, 200, 0.05);
+            border:1px solid rgba(0,255,200,0.20);
+        ">
 
+            <h4 style="color:#fafafa; margin-top:0; margin-bottom:8px;">
+                🤖 What happens in Smart Insights?
+            </h4>
+
+            <ul style="color:#b9fff4; font-size:15px; line-height:1.60; margin-top:0;">
+                <li>Uses <strong>AI Trend Confidence</strong> to label a stock as Buy / Hold / Risky</li>
+                <li>Plots short-term <strong>future price projection</strong> using trend math</li>
+                <li>Detects <strong>future Buy / Sell zones</strong> with chart markers</li>
+                <li>Estimates <strong>how many shares</strong> you can buy with your budget</li>
+                <li>Great for learning <strong>smart timing and risk-aware analysis</strong></li>
+            </ul>
+
+            <div style="
+                border-top:1px solid rgba(0,255,200,0.18);
+                margin:10px 0 12px 0;
+            "></div>
+
+            <strong style="color:#7affec; font-size:15.5px;">
+                🎯 Why this matters?
+            </strong><br>
+
+            <span style="color:#a6fff5; font-size:15px;">
+                Helps build <strong>high-confidence predictions</strong> and avoid emotional
+                decisions — giving clarity on <strong>when to enter</strong> and
+                <strong>when to exit</strong> a trade — just like smart investors do.
+            </span>
+
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # 🔻 your existing Smart Insights widgets (budget selectbox etc.) come AFTER this
 
     budget_vals, budget_labels = build_budget_options()
     col_a, col_b, col_c = st.columns(3)
@@ -765,6 +776,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
