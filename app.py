@@ -512,9 +512,46 @@ with tab2:
 # ============== TAB 3 — Risk View ==============
 with tab3:
     st.subheader("Volatility & Risk Index")
+    st.markdown(f"""
+    <!-- Risk Alerts Box -->
+    <div style="
+        background:rgba(255, 50, 50, 0.10);
+        border-left:6px solid #ff4d4d;
+        border-radius:10px;
+        padding:14px 18px;
+        color:{text_color};
+        font-size:14.4px;
+        line-height:1.45;
+        margin-bottom:16px;
+    ">
+        <strong>🔺 Volatility signals uncertainty:</strong><br>
+        • Big price swings → market confusion or hype<br>
+        • Higher risk during aggressive buying/selling ⚡<br>
+        • Sudden spikes = instability / not reliable 📉<br><br>
 
+        <strong>📊 Measuring risk:</strong><br>
+        • Volatility Index (VIX-style fear indicator) 😨<br>
+        • Standard deviation → price instability levels 📐<br>
+        • Shorter periods → higher risk sensitivity 🚧<br>
+    </div>
+
+    <!-- Why this matters -->
+    <div style="
+        margin-top:6px;
+        background:rgba(255, 120, 120, 0.09);
+        border-radius:8px;
+        padding:12px 16px;
+        border-left:4px solid #ff2e63;
+        color:{text_color};
+        font-size:14px;
+        line-height:1.45;
+    ">
+        <strong>🎯 Why this matters?</strong><br>
+        Helps you decide <strong>when to avoid entering</strong> a stock or reduce exposure —
+        protecting capital when volatility rises 🚫💸.
+    </div>
+    """, unsafe_allow_html=True)
     window = st.slider("Volatility Window", 5, 55, 20)
-
     for ticker in selected_companies:
         df = fetch_prices(ticker)
         if df is None or df.empty:
@@ -526,11 +563,66 @@ with tab3:
             vr.set_index("trade_date")[["volatility", "risk"]],
             use_container_width=True,
         )
-
-
 # ============== TAB 4 — Comparison View ==============
 with tab4:
     st.subheader("Compare Price Trends & Correlation")
+    st.markdown(f"""
+    <div style="
+        display:flex;
+        gap:18px;
+        margin-top:8px;
+        margin-bottom:18px;
+    ">
+
+        <!-- Card: Compare Trend -->
+        <div style="
+            flex:1;
+            background:linear-gradient(135deg, #005bea55, #00c6fb44);
+            border-radius:10px;
+            padding:14px 16px;
+            font-size:14.4px;
+            line-height:1.45;
+            color:{text_color};
+        ">
+            <strong>📈 Compare Price Movements</strong><br>
+            • See which stock performs stronger over time<br>
+            • Normalize prices = fair performance comparison<br>
+            • Spot winners vs laggards quickly 🏆📉
+        </div>
+
+        <!-- Card: Correlation -->
+        <div style="
+            flex:1;
+            background:linear-gradient(135deg, #b721ff44, #21d4fd44);
+            border-radius:10px;
+            padding:14px 16px;
+            font-size:14.4px;
+            line-height:1.45;
+            color:{text_color};
+        ">
+            <strong>🧬 Correlation Insight</strong><br>
+            • Higher correlation → move together 🔗<br>
+            • Negative → hedge opportunities 🔄<br>
+            • Helps diversify with purpose 🎯
+        </div>
+
+    </div>
+
+    <!-- Why this matters -->
+    <div style="
+        background:rgba(0,200,255,0.08);
+        border-radius:8px;
+        padding:12px 16px;
+        border-left:4px solid #00eaff;
+        color:{text_color};
+        font-size:14px;
+        line-height:1.45;
+    ">
+        <strong>🎯 Why this matters?</strong><br>
+        Enables smarter <strong>diversification</strong> and filters stocks that move
+        <strong>together vs independently</strong> — essential for balancing gains & risk ⚖️.
+    </div>
+    """, unsafe_allow_html=True)
 
     if len(selected_companies) >= 2:
         merged = compare_companies(selected_companies, start_date, end_date)
@@ -649,6 +741,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
