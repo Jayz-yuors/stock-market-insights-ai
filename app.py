@@ -570,52 +570,54 @@ with tab4:
     st.subheader("Compare Price Trends & Correlation")
     # ===== INFO BOX – Compare & Correlate =====
     st.markdown("""
-    <div style="display:flex; gap:16px; flex-wrap:wrap;">
+    <div style="margin-top:10px;">
     
-        <!-- Card 1 -->
-        <div style="
-            flex:1;
-            min-width:280px;
-            background:linear-gradient(145deg, #005bea44, #00c6fb44);
-            border-radius:10px;
-            padding:16px 20px;
-            color:#ddf7ff;
-        ">
-            <strong>📈 Compare Price Movement</strong><br>
-            • Normalize prices → fair performance comparison 📊<br>
-            • Find strongest and weakest stocks quickly 🏅📉<br>
-            • Identify who is outperforming the market 🚀<br>
-        </div>
-    
-        <!-- Card 2 -->
-        <div style="
-            flex:1;
-            min-width:280px;
-            background:linear-gradient(145deg, #b721ff44, #21d4fd44);
-            border-radius:10px;
-            padding:16px 20px;
-            color:#f5eaff;
-        ">
-            <strong>🔗 Correlation Insights</strong><br>
-            • Positive correlation → move together 🤝<br>
-            • Negative correlation → hedge opportunities 🔄<br>
-            • Great for **portfolio risk balancing** 🧠💼<br>
-        </div>
-    
+    <!-- Compare Card -->
+    <div style="
+        background:linear-gradient(145deg, #005bea33, #00c6fb22);
+        padding:16px 20px;
+        border-radius:10px;
+        color:#e8f8ff;
+        margin-bottom:12px;
+        border-left:4px solid #00c6fb;
+    ">
+    <strong>📈 Compare Price Strength</strong><br>
+    • Normalize price → fair comp. 📊<br>
+    • Spot consistent outperformers 🚀<br>
+    • Check who beats the market over time 🏆📈<br>
     </div>
     
+    <!-- Correlation Card -->
+    <div style="
+        background:linear-gradient(145deg, #b721ff33, #21d4fd22);
+        padding:16px 20px;
+        border-radius:10px;
+        color:#f1e6ff;
+        margin-bottom:14px;
+        border-left:4px solid #9b59ff;
+    ">
+    <strong>🔗 Correlation Outlook</strong><br>
+    • Same direction = paired performance 🤝<br>
+    • Opposite direction = hedge opportunities 🔄<br>
+    • Build diversified portfolios with confidence 🧠💼<br>
+    </div>
+    
+    <!-- Why this matters -->
     <div style="
         background:rgba(0,200,255,0.06);
         padding:12px 16px;
         border-radius:10px;
         border-left:4px solid #00c6fb;
-        margin-top:14px;
-        color:#c8f7ff;
+        color:#c7f4ff;
     ">
     <strong>🎯 Why this matters?</strong><br>
-    Understanding correlation helps avoid **putting all eggs in one basket** — smart diversification = lower risk 📉🛡️.
+    Avoid **putting all eggs in one basket** → diversify smartly to reduce risk 📉🛡️.
+    </div>
+    
     </div>
     """, unsafe_allow_html=True)
+
+   
     if len(selected_companies) >= 2:
         merged = compare_companies(selected_companies, start_date, end_date)
         st.markdown("### 📈 Normalized Price Comparison")
@@ -729,6 +731,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
