@@ -235,28 +235,43 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 with tab1:
     st.subheader("📈 Price Trend + Technical Indicators")
     # === Info Box for Tab 1 ===
+    # === Improved Detailed Info Box for Tab 1 ===
     st.markdown("""
     <div style="
         background:rgba(0, 180, 216, 0.08);
         border-left:6px solid #00b4d8;
-        padding:12px 16px;
+        padding:14px 18px;
         border-radius:8px;
         margin-top:4px;
-        margin-bottom:18px;
+        margin-bottom:22px;
         font-size:15px;
-        line-height:1.45;
+        line-height:1.55;
         color:#c9e8ff;
     ">
-    <strong>What you can do here:</strong><br>
-    • View historical stock price movement over time 📈<br>
-    • Add Moving Averages (SMA/EMA) to understand trend direction 🔁<br>
-    • Analyze RSI & MACD to judge momentum & strength of price swings 💹<br>
-    • Identify patterns like uptrends, pullbacks & breakouts 🎯<br>
-    <br>
-    <b>Tip:</b> Shorter SMAs react faster (high volatility) while longer SMAs show stable trends.
+    <strong>📌 What can you learn & analyze here?</strong><br>
+    ✔ How a stock has performed historically — identify trends & patterns<br>
+    ✔ Compare price with <strong>Moving Averages (SMA/EMA)</strong> to detect trend direction<br>
+    ✔ Use <strong>RSI</strong> to find overbought & oversold zones (momentum strength)<br>
+    ✔ Use <strong>MACD</strong> to confirm trend reversals & breakout signals<br><br>
+    
+    <strong>🧠 Quick Trading Concepts Explained:</strong><br>
+    • <b>SMA/EMA:</b> Helps you check if the stock is trending UP or DOWN 📈📉<br>
+    &emsp;▫ Price ↑ above MA → Bullish zone → good momentum<br>
+    &emsp;▫ Price ↓ below MA → Bearish zone → caution<br><br>
+    
+    • <b>RSI (14):</b> Measures buying vs selling pressure 🔄<br>
+    &emsp;▫ RSI > 70 → Overbought → Possible price dip<br>
+    &emsp;▫ RSI < 30 → Oversold → Possible bounce<br><br>
+    
+    • <b>MACD:</b> Helps confirm whether a trend is strong & sustainable 🚀<br>
+    &emsp;▫ MACD crossing signal line upward → Positive shift (Buy signal)<br>
+    &emsp;▫ MACD crossing downward → Weakening momentum (Sell signal)<br><br>
+    
+    <strong>🎯 Why this matters?</strong><br>
+    This tab helps you build <b>trend-following strategies</b> and understand <b>market psychology</b> —
+    perfect for learning when to <b>enter</b> and <b>exit</b> a stock confidently!
     </div>
     """, unsafe_allow_html=True)
-
     view_mode = st.radio(
         "Indicator Display Mode",
         ["Overlay on Chart", "Separate Panels"],
@@ -539,6 +554,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
