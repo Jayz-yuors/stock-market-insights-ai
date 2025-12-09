@@ -18,11 +18,12 @@ from data_fetcher import get_company_list, run_fetching
 
 # ============== BASIC PAGE CONFIG ==============
 st.set_page_config(
-    page_title="AI Stock Insights & Learning Platform - Nifty50 Analysis",
+    page_title="Stock Insights – Smart Nifty50 Analytics",
     page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
 # ============== THEME TOGGLE ==============
 if "theme" not in st.session_state:
     st.session_state["theme"] = "Dark"
@@ -38,94 +39,59 @@ if theme == "Dark":
     bg_color = "#060814"
     card_color = "#101623"
     text_color = "#fafafa"
-    accent = "#00b4d8"
+    subtext_color = "rgba(122, 234, 255, 0.85)"
+    accent = "#00e1ff"
 else:
     bg_color = "#f3f8ff"
     card_color = "#ffffff"
     text_color = "#111827"
+    subtext_color = "#444"  # More contrast for light mode
     accent = "#0077ff"
 
-# ============== DEV BANNER IN SIDEBAR ==============
-st.sidebar.markdown(
-    """
-    <div style="
-        margin-top: 12px;
-        padding: 10px 15px;
-        text-align: center;
-        border-radius: 8px;
-        background: linear-gradient(90deg, #0099ff, #00cc99);
-        font-size: 13px;
-        font-weight: 600;
-        color: white;
-    ">
-        👨‍💻 Developed by<br>
-        <a href="https://www.linkedin.com/in/jay-keluskar-b17601358"
-           target="_blank"
-           style="color:white; text-decoration:none;">
-            Jay Keluskar
-        </a>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-# ============== HEADER & SEO TAGS ==============
+# ============== SEO META TAGS ==============
 st.markdown("""
-    <head>
-        <title>Stock Insights – Master the Market Step-by-Step</title>
-        <meta name="description" content="Learn stock market concepts with AI-powered Nifty50 analytics. Get price trends, technical indicators, risk, volatility, and correlation insights.">
-        <meta name="keywords" content="Nifty50, Stock Insights, Learn Investing, RSI, MACD, SMA, Volatility, Risk Analysis, Stock Forecasting, Finance Education">
-        <meta property="og:title" content="Master the Market Step-by-Step">
-        <meta property="og:description" content="Smart insights for smarter investing — powered by AI & real Nifty50 data.">
-        <meta property="og:type" content="website">
-    </head>
+    <meta name="description" content="AI-powered stock learning platform — Master Nifty50 analysis with SMA, RSI, volatility, correlation, and smart insights.">
+    <meta name="keywords" content="Stock Market, Nifty50, Finance Learning, Technical Indicators, SMA, RSI, MACD, Risk & Volatility, AI Stock Analysis">
+    <meta property="og:title" content="Stock Insights — Master the Market Step-by-Step">
+    <meta property="og:description" content="Smart Insights for Smarter Investing — Nifty50 analytics powered by AI.">
+    <meta property="og:type" content="website">
 """, unsafe_allow_html=True)
 
-# Visible UI header
-# ============== BRAND HEADER ==============
+# ============== BRAND HEADER (Premium Style) ==============
 st.markdown(f"""
-    <div style="
-        text-align:center;
-        margin-top:20px;
-        margin-bottom:25px;
-    ">
+    <style>
+        .brand-title {{
+            font-size: 42px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #12c2e9, #0ee6b7, #00ff95);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 4px;
+        }}
+        .brand-tagline {{
+            font-size: 24px;
+            font-weight: 700;
+            color: {text_color};
+            margin-top: 0px;
+            margin-bottom: 6px;
+        }}
+        .brand-sub {{
+            font-size: 15px;
+            font-weight: 500;
+            color: {subtext_color};
+            margin-top: 0px;
+        }}
+    </style>
 
-        <!-- PRODUCT BRAND -->
-        <h1 style="
-            font-size:40px;
-            font-weight:800;
-            letter-spacing:4px;
-            background:linear-gradient(90deg, #00e1ff, #00ff95);
-            -webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;
-            margin-bottom:10px;
-            text-transform:uppercase;
-        ">
-            Stock Insights
-        </h1>
-
-        <!-- MAIN TAGLINE -->
-        <h2 style="
-            font-size:28px;
-            font-weight:700;
-            color:{text_color};
-            margin:0;
-        ">
-            Master the Market Step-by-Step
-        </h2>
-
-        <!-- SUBTAGLINE -->
-        <p style="
-            font-size:16px;
-            font-weight:500;
-            color:rgba(122, 234, 255, 0.85);
-            margin-top:8px;
-        ">
-            Nifty50 Analytics — Smart Insights for Smarter Investing
-        </p>
-
+    <div style="text-align:center; margin-top:10px; margin-bottom:30px;">
+        <div class="brand-title">Stock Insights</div>
+        <div class="brand-tagline">Master the Market Step-by-Step</div>
+        <div class="brand-sub">Nifty50 Analytics — Smart Insights for Smarter Investing</div>
     </div>
 """, unsafe_allow_html=True)
+
 
 # ============== AUTO UPDATE ==============
 @st.cache_resource(ttl=24 * 60 * 60)
