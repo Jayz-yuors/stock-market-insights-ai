@@ -236,41 +236,91 @@ with tab1:
     st.subheader("📈 Price Trend + Technical Indicators")
     # === Info Box for Tab 1 ===
     # === Improved Detailed Info Box for Tab 1 ===
+    # === Modern 2x2 Grid Info Box for Tab 1 ===
     st.markdown("""
     <div style="
-        background:rgba(0, 180, 216, 0.08);
-        border-left:6px solid #00b4d8;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-top: 8px;
+        margin-bottom: 12px;
+    ">
+    
+        <!-- Left Top -->
+        <div style="
+            background:rgba(0,180,216,0.08);
+            border-left:4px solid #00b4d8;
+            padding:12px 16px;
+            border-radius:8px;
+            color:#c9e8ff;
+        ">
+            <strong>📌 What will you analyze here?</strong><br>
+            • Stock price behaviour & market cycles<br>
+            • Spot big uptrends & downtrends<br>
+            • Understand momentum using SMA/EMA<br>
+            • Validate trend direction confidently
+        </div>
+    
+        <!-- Right Top -->
+        <div style="
+            background:rgba(0,180,216,0.08);
+            border-left:4px solid #00b4d8;
+            padding:12px 16px;
+            border-radius:8px;
+            color:#c9e8ff;
+        ">
+            <strong>🔍 RSI — Momentum Pressure</strong><br>
+            • RSI > 70 → Possible pullback (overbought)<br>
+            • RSI < 30 → Possible bounce (oversold)<br>
+            • Helps in timing smart entry & exits
+        </div>
+    
+        <!-- Left Bottom -->
+        <div style="
+            background:rgba(0,180,216,0.08);
+            border-left:4px solid #00b4d8;
+            padding:12px 16px;
+            border-radius:8px;
+            color:#c9e8ff;
+        ">
+            <strong>📈 SMA/EMA — Trend Direction</strong><br>
+            • Price above MA → Bullish strength<br>
+            • Price below MA → Bearish caution<br>
+            • Short-term SMAs react faster to change
+        </div>
+    
+        <!-- Right Bottom -->
+        <div style="
+            background:rgba(0,180,216,0.08);
+            border-left:4px solid #00b4d8;
+            padding:12px 16px;
+            border-radius:8px;
+            color:#c9e8ff;
+        ">
+            <strong>🚀 MACD — Trend Confidence</strong><br>
+            • Positive crossover → Strength building<br>
+            • Negative crossover → Weakness ahead<br>
+            • Great for breakout confirmation
+        </div>
+    
+    </div>
+    
+    <!-- Why this matters section -->
+    <div style="
+        background:rgba(0,180,216,0.05);
+        border-left:4px solid #00b4d8;
         padding:14px 18px;
         border-radius:8px;
-        margin-top:4px;
-        margin-bottom:16px;
-        font-size:15px;
-        line-height:1.55;
-        color:#c9e8ff;
+        margin-top:6px;
+        color:#aee6ff;
     ">
-    <strong>📌 What can you learn & analyze here?</strong><br>
-    ✔ How a stock has performed historically — identify trends & patterns<br>
-    ✔ Compare price with <strong>Moving Averages (SMA/EMA)</strong> to detect trend direction<br>
-    ✔ Use <strong>RSI</strong> to find overbought & oversold zones (momentum strength)<br>
-    ✔ Use <strong>MACD</strong> to confirm trend reversals & breakout signals<br><br>
-    <strong>🧠 Quick Trading Concepts Explained:</strong><br>
-    • <b>SMA/EMA:</b> Helps you check if the stock is trending UP or DOWN 📈📉<br>
-    &emsp;▫ Price ↑ above MA → Bullish zone → good momentum<br>
-    &emsp;▫ Price ↓ below MA → Bearish zone → caution<br><br>
-    
-    • <b>RSI (14):</b> Measures buying vs selling pressure 🔄<br>
-    &emsp;▫ RSI > 70 → Overbought → Possible price dip<br>
-    &emsp;▫ RSI < 30 → Oversold → Possible bounce<br><br>
-    
-    • <b>MACD:</b> Helps confirm whether a trend is strong & sustainable 🚀<br>
-    &emsp;▫ MACD crossing signal line upward → Positive shift (Buy signal)<br>
-    &emsp;▫ MACD crossing downward → Weakening momentum (Sell signal)<br><br>
-    
-    <strong>🎯 Why this matters?</strong><br>
-    This tab helps you build <b>trend-following strategies</b> and understand <b>market psychology</b> —
-    perfect for learning when to <b>enter</b> and <b>exit</b> a stock confidently!
+        <strong>🎯 Why this matters?</strong><br>
+        These tools help you build <strong>trend-following strategies</strong> and
+        understand <strong>market psychology</strong> — giving you clarity on when to
+        <strong>enter</strong> and <strong>exit</strong> a stock with confidence.
     </div>
     """, unsafe_allow_html=True)
+
     view_mode = st.radio(
         "Indicator Display Mode",
         ["Overlay on Chart", "Separate Panels"],
@@ -553,6 +603,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
