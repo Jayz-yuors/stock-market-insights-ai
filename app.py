@@ -221,64 +221,82 @@ def download_csv(df: pd.DataFrame, name: str):
         mime="text/csv",
     )
 # ============== TAB HOVER TOOLTIPS (CSS) ==============
+# ============== FIXED TAB TOOLTIP CSS ==============
 st.markdown("""
 <style>
-/* Make each tab act as a tooltip anchor */
-div[data-baseweb="tab-list"] > div[data-baseweb="tab"] {
+/* Target each tab label container */
+.stTabs [data-baseweb="tab"] {
     position: relative;
+    cursor: help;
 }
 
-/* General tooltip style (hidden by default) */
-div[data-baseweb="tab-list"] > div[data-baseweb="tab"]::after {
+/* Default tooltip style — hidden initially */
+.stTabs [data-baseweb="tab"]::after {
+    content: attr(data-tooltip);  /* Dynamic tooltip text from attribute */
     position: absolute;
-    background: #020617;
-    color: #e5e7eb;
-    padding: 6px 10px;
+    background: #111827;
+    color: #ffffff;
+    padding: 8px 12px;
     border-radius: 6px;
-    font-size: 11.5px;
+    font-size: 12px;
     line-height: 1.4;
     white-space: normal;
     max-width: 260px;
-    top: 115%;
+    bottom: -60px;
     left: 50%;
     transform: translateX(-50%);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.15s ease-out;
+    transition: opacity 0.15s ease-in-out;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.45);
     z-index: 9999;
 }
 
-/* Show tooltip only on hover */
-div[data-baseweb="tab-list"] > div[data-baseweb="tab"]:hover::after {
+/* Show tooltip when hovering */
+.stTabs [data-baseweb="tab"]:hover::after {
     opacity: 1;
 }
 
-/* === Individual tab texts (order matters) === */
+/* Custom tooltip text for each tab (nth-child order must match UI) */
 
 /* 1️⃣ Price Trends */
-div[data-baseweb="tab-list"] > div[data-baseweb="tab"]:nth-child(1)::after {
-    content: "View historical price charts, SMA/EMA lines and technical indicators like RSI & MACD for selected Nifty50 stocks.";
+.stTabs [data-baseweb="tab"]:nth-child(1) {
+    --tooltip: "Analyze stock price trends with SMA / EMA and key indicators like RSI & MACD.";
+}
+.stTabs [data-baseweb="tab"]:nth-child(1)::after {
+    content: var(--tooltip);
 }
 
 /* 2️⃣ Abrupt Changes */
-div[data-baseweb="tab-list"] > div[data-baseweb="tab"]:nth-child(2)::after {
-    content: "Detect sudden jumps and crashes in daily returns using a configurable % change threshold.";
+.stTabs [data-baseweb="tab"]:nth-child(2) {
+    --tooltip: "Detect sudden bullish and bearish movements with configurable % thresholds.";
+}
+.stTabs [data-baseweb="tab"]:nth-child(2)::after {
+    content: var(--tooltip);
 }
 
 /* 3️⃣ Risk & Volatility */
-div[data-baseweb="tab-list"] > div[data-baseweb="tab"]:nth-child(3)::after {
-    content: "Analyse rolling volatility and a custom risk index to understand how stable or risky each stock has been.";
+.stTabs [data-baseweb="tab"]:nth-child(3) {
+    --tooltip: "Explore stock volatility and risk index to assess stability and uncertainty.";
+}
+.stTabs [data-baseweb="tab"]:nth-child(3)::after {
+    content: var(--tooltip);
 }
 
 /* 4️⃣ Compare & Correlate */
-div[data-baseweb="tab-list"] > div[data-baseweb="tab"]:nth-child(4)::after {
-    content: "Compare multiple stocks on a normalized scale and explore their correlation matrix & heatmap.";
+.stTabs [data-baseweb="tab"]:nth-child(4) {
+    --tooltip: "Compare multiple stocks and visualize correlations with heatmaps & normalized prices.";
+}
+.stTabs [data-baseweb="tab"]:nth-child(4)::after {
+    content: var(--tooltip);
 }
 
 /* 5️⃣ Smart Insights */
-div[data-baseweb="tab-list"] > div[data-baseweb="tab"]:nth-child(5)::after {
-    content: "Get signal labels, confidence levels and projected buy/sell zones based on recent price trends.";
+.stTabs [data-baseweb="tab"]:nth-child(5) {
+    --tooltip: "AI-powered insights with confidence scoring and future trend projections.";
+}
+.stTabs [data-baseweb="tab"]:nth-child(5)::after {
+    content: var(--tooltip);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -580,6 +598,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
