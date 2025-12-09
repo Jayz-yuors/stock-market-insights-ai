@@ -82,17 +82,51 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Visible UI header
-st.markdown(
-    f"""
-    <h1 style="text-align:center; font-size: 2.3rem; font-weight: 800; margin-bottom: -10px;">
-        Master the Market Step-by-Step
-    </h1>
-    <p style="text-align:center; font-size:1rem; color:rgba(148,163,184,0.95); margin-bottom:25px;">
-        Nifty50 Analytics — Smart Insights for Smarter Investing
-    </p>
-    """,
-    unsafe_allow_html=True,
-)
+# ============== BRAND HEADER ==============
+st.markdown(f"""
+    <div style="
+        text-align:center;
+        margin-top:20px;
+        margin-bottom:25px;
+    ">
+
+        <!-- PRODUCT BRAND -->
+        <h1 style="
+            font-size:40px;
+            font-weight:800;
+            letter-spacing:4px;
+            background:linear-gradient(90deg, #00e1ff, #00ff95);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            margin-bottom:10px;
+            text-transform:uppercase;
+        ">
+            Stock Insights
+        </h1>
+
+        <!-- MAIN TAGLINE -->
+        <h2 style="
+            font-size:28px;
+            font-weight:700;
+            color:{text_color};
+            margin:0;
+        ">
+            Master the Market Step-by-Step
+        </h2>
+
+        <!-- SUBTAGLINE -->
+        <p style="
+            font-size:16px;
+            font-weight:500;
+            color:rgba(122, 234, 255, 0.85);
+            margin-top:8px;
+        ">
+            Nifty50 Analytics — Smart Insights for Smarter Investing
+        </p>
+
+    </div>
+""", unsafe_allow_html=True)
+
 # ============== AUTO UPDATE ==============
 @st.cache_resource(ttl=24 * 60 * 60)
 def silent_update():
@@ -519,6 +553,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
