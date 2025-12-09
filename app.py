@@ -220,74 +220,6 @@ def download_csv(df: pd.DataFrame, name: str):
         file_name=f"{name}.csv",
         mime="text/csv",
     )
-# ============== FIXED, CLEAN TAB TOOLTIP SYSTEM ==============
-st.markdown("""
-<style>
-
-/* Ensure tabs react properly */
-.stTabs [data-baseweb="tab"] {
-    position: relative;
-    cursor: default;
-}
-
-/* Hidden tooltip default */
-.stTabs [data-baseweb="tab"]::after {
-    visibility: hidden;
-    opacity: 0;
-    position: absolute;
-    bottom: -55px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    background: #111827;
-    color: white;
-    text-align: left;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    width: 240px;
-    white-space: normal;
-    line-height: 1.4;
-    transition: opacity .18s ease-in-out;
-    z-index: 9999;
-    pointer-events: none;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-}
-
-/* Show only when hovered */
-.stTabs [data-baseweb="tab"]:hover::after {
-    visibility: visible;
-    opacity: 1;
-}
-
-/* Tooltip Content (Based on Tab Order) */
-
-/* 1️⃣ Price Trends */
-.stTabs [data-baseweb="tab"]:nth-child(1)::after {
-    content: "Analyze stock price trends with moving averages, RSI, MACD & more indicators.";
-}
-
-/* 2️⃣ Abrupt Changes */
-.stTabs [data-baseweb="tab"]:nth-child(2)::after {
-    content: "Identify sudden market movement — detect large bullish/bearish jumps instantly.";
-}
-
-/* 3️⃣ Risk & Volatility */
-.stTabs [data-baseweb="tab"]:nth-child(3)::after {
-    content: "Understand stock stability using volatility & financial risk-based signals.";
-}
-
-/* 4️⃣ Compare & Correlate */
-.stTabs [data-baseweb="tab"]:nth-child(4)::after {
-    content: "Compare performance & correlation between multiple stocks visually.";
-}
-
-/* 5️⃣ Smart Insights */
-.stTabs [data-baseweb="tab"]:nth-child(5)::after {
-    content: "AI-based future prediction, buy/hold guidance & confidence scoring.";
-}
-
-</style>
-""", unsafe_allow_html=True)
 # ============== TABS ==============
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📈 Price Trends",
@@ -585,6 +517,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
