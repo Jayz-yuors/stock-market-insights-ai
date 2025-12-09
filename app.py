@@ -238,75 +238,86 @@ with tab1:
     # === Improved Detailed Info Box for Tab 1 ===
     # === Modern 2x2 Grid Info Box for Tab 1 ===
     # === Modern 2x2 Grid Info Box for Tab 1 ===
+    # === TAB 1 INFO USING STREAMLIT COLUMNS ===
+
+    st.markdown("### 📘 Learn & Analyze with Price Trends")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        <div style="
+            background:rgba(0,180,216,0.08);
+            border-left:4px solid #00b4d8;
+            padding:12px 16px;
+            border-radius:8px;
+            color:#c9e8ff;
+            margin-bottom:12px;
+        ">
+        <strong>📌 What will you analyze here?</strong><br>
+        • Stock price behaviour & market cycles<br>
+        • Spot big uptrends & downtrends<br>
+        • Understand momentum using SMA/EMA<br>
+        • Validate trend direction confidently
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div style="
+            background:rgba(0,180,216,0.08);
+            border-left:4px solid #00b4d8;
+            padding:12px 16px;
+            border-radius:8px;
+            color:#c9e8ff;
+            margin-bottom:12px;
+        ">
+        <strong>🔍 RSI — Momentum Pressure</strong><br>
+        • RSI > 70 = Overbought → Possible correction<br>
+        • RSI < 30 = Oversold → Possible bounce<br>
+        • Helps time better entry & exit points
+        </div>
+        """, unsafe_allow_html=True)
+    
+    col3, col4 = st.columns(2)
+    
+    with col3:
+        st.markdown("""
+        <div style="
+            background:rgba(0,180,216,0.08);
+            border-left:4px solid #00b4d8;
+            padding:12px 16px;
+            border-radius:8px;
+            color:#c9e8ff;
+            margin-bottom:12px;
+        ">
+        <strong>📈 SMA / EMA — Trend Direction</strong><br>
+        • Price above MA → Bullish momentum<br>
+        • Price below MA → Bearish weakness<br>
+        • Short SMAs react faster to volatility
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown("""
+        <div style="
+            background:rgba(0,180,216,0.08);
+            border-left:4px solid #00b4d8;
+            padding:12px 16px;
+            border-radius:8px;
+            color:#c9e8ff;
+            margin-bottom:12px;
+        ">
+        <strong>🚀 MACD — Trend Confidence</strong><br>
+        • Upward crossover → Strong buying zone<br>
+        • Downward crossover → Weakening trend<br>
+        • Great for breakout confirmation  
+        </div>
+        """, unsafe_allow_html=True)
+    
+    
+    # === Why it Matters Section ===
     st.markdown("""
-    <div style="
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-        margin-top: 8px;
-        margin-bottom: 12px;
-    ">
-    
-        <!-- Left Top -->
-        <div style="
-            background:rgba(0,180,216,0.08);
-            border-left:4px solid #00b4d8;
-            padding:12px 16px;
-            border-radius:8px;
-            color:#c9e8ff;
-        ">
-            <strong>📌 What will you analyze here?</strong><br>
-            • Stock price behaviour & market cycles<br>
-            • Spot big uptrends & downtrends<br>
-            • Understand momentum using SMA/EMA<br>
-            • Validate trend direction confidently
-        </div>
-    
-        <!-- Right Top -->
-        <div style="
-            background:rgba(0,180,216,0.08);
-            border-left:4px solid #00b4d8;
-            padding:12px 16px;
-            border-radius:8px;
-            color:#c9e8ff;
-        ">
-            <strong>🔍 RSI — Momentum Pressure</strong><br>
-            • RSI > 70 → Possible pullback (overbought)<br>
-            • RSI < 30 → Possible bounce (oversold)<br>
-            • Helps in timing smart entry & exits
-        </div>
-    
-        <!-- Left Bottom -->
-        <div style="
-            background:rgba(0,180,216,0.08);
-            border-left:4px solid #00b4d8;
-            padding:12px 16px;
-            border-radius:8px;
-            color:#c9e8ff;
-        ">
-            <strong>📈 SMA / EMA — Trend Direction</strong><br>
-            • Price above MA → Bullish strength<br>
-            • Price below MA → Bearish caution<br>
-            • Short-term SMAs react faster to change
-        </div>
-    
-        <!-- Right Bottom -->
-        <div style="
-            background:rgba(0,180,216,0.08);
-            border-left:4px solid #00b4d8;
-            padding:12px 16px;
-            border-radius:8px;
-            color:#c9e8ff;
-        ">
-            <strong>🚀 MACD — Trend Confidence</strong><br>
-            • Positive crossover → Strength building<br>
-            • Negative crossover → Weakness ahead<br>
-            • Great for breakout confirmation
-        </div>
-    
-    </div>
-    
-    <!-- Why this matters -->
     <div style="
         background:rgba(0,180,216,0.05);
         border-left:4px solid #00b4d8;
@@ -315,13 +326,11 @@ with tab1:
         margin-top:6px;
         color:#aee6ff;
     ">
-        <strong>🎯 Why this matters?</strong><br>
-        Helps build <strong>trend-following strategies</strong> and understand
-        <strong>market psychology</strong> — guiding accurate <strong>entry</strong>
-        and <strong>exit</strong> decisions with confidence.
+    <strong>🎯 Why this matters?</strong><br>
+    You learn trend-following strategies and understand **market psychology** — helping you decide **when to enter** and **when to exit** smartly.
     </div>
-    
     """, unsafe_allow_html=True)
+    
 
 
     view_mode = st.radio(
@@ -606,6 +615,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
