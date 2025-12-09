@@ -664,8 +664,117 @@ with tab4:
 
 # ============== TAB 5 — Smart Insights ==============
 with tab5:
-    st.subheader("Smart Insights, Opportunities & Forecast")
+    st.subheader("🧠 Smart Insights, Opportunities & Forecast")
 
+    # Inputs UI
+    budget_vals, budget_labels = build_budget_options()
+    col_a, col_b, col_c = st.columns(3)
+    with col_a:
+        budget_label = st.selectbox("Budget", budget_labels, index=4)
+        budget = budget_vals[budget_labels.index(budget_label)]
+    with col_b:
+        horizon = st.radio("Type", ["Short Term", "Long Term"], horizontal=True)
+    with col_c:
+        forecast_window = 15 if horizon == "Short Term" else 60
+        st.metric("Forecast Window", f"{forecast_window} days")
+
+    st.caption("Educational Purpose Only — Not Investment Advice 📘")
+
+    # Pyramid Style Output
+    for ticker in selected_companies:
+        df = fetch_prices(ticker)
+        if df is None or df.empty:
+            continue
+
+        df = compute_sma(df)
+        col_close = get_close_price_column(df)
+        conf, label, pct, vol = analyze_trend_confidence(df, col_close, horizon)
+        latest = df[col_close].iloc[-1]
+        shares = int(budget / latest)
+        buy_future, sell_future = project_future(df, col_close, horizon)
+
+        # Determine color + emoji by signal
+        if label in ["Strong Buy", "Buy"]:
+            color_block = "#004225"
+            gradient = "linear-gradient(135deg, #00ffab66, #007755aa)"
+            emoji = "🚀"
+        elif label == "Hold":
+            color_block = "#4b4300"
+            gradient = "linear-gradient(135deg, #ffee5888, #c9aa0099)"
+            emoji = "⚠️"
+        else:
+            color_block = "#4a0000"
+            gradient = "linear-gradient(135deg, #ff4e6288, #a8000088)"
+            emoji = "🚫"
+
+        st.markdown(f"""
+        <div style="
+            text-align:center;
+            margin-top:20px;
+            padding:18px;
+            background:{gradient};
+            border-radius:14px;
+            border:2px solid {color_block};
+        ">
+            <h3 style="margin:0;font-weight:800;color:white;">{emoji} {label}</h3>
+            <p style="font-size:15px;color:#e4faff;">
+                Confidence: <strong>{conf:.1f}%</strong><br>
+                Trend Change: <strong>{pct:+.2f}%</strong><br>
+                Volatility: <strong>{vol:.2f}%</strong>
+            </p>
+            <p style="font-size:15px;color:#ddf4ff;">
+                With {budget_label}, Approx shares: <strong>{shares}</strong>
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Chart
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=df["trade_date"], y=df[col_close],
+                                 mode="lines", name="Close Price"))
+        fig.add_trace(go.Scatter(x=df["trade_date"], y=df["SMA"],
+                                 mode="lines", name="SMA"))
+        if buy_future is not None and not buy_future.empty:
+            fig.add_trace(go.Scatter(
+                x=buy_future["trade_date"],
+                y=buy_future[col_close],
+                mode="markers",
+                marker_color="lime",
+                name="Future Buy"
+            ))
+        if sell_future is not None and not sell_future.empty:
+            fig.add_trace(go.Scatter(
+                x=sell_future["trade_date"],
+                y=sell_future[col_close],
+                mode="markers",
+                marker_color="red",
+                name="Future Sell"
+            ))
+
+        fig.update_layout(
+            title=f"{ticker} — Forecasted Buy/Sell Zones",
+            xaxis_title="Date",
+            yaxis_title="Price (₹)"
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Bottom rationale explanation
+        st.markdown("""
+        <div style="
+            margin-top:10px;
+            background:rgba(0,180,216,0.08);
+            border-left:4px solid #00b4d8;
+            padding:14px 18px;
+            border-radius:10px;
+        ">
+            <strong>🎯 Why this matters?</strong><br>
+            This helps you understand <strong>when to enter</strong>,
+            <strong>when to wait</strong>, and <strong>when to exit</strong>
+            — using data-driven confidence levels instead of guesswork.
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("---")
     budget_vals, budget_labels = build_budget_options()
     col_a, col_b, col_c = st.columns(3)
     with col_a:
@@ -731,6 +840,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
