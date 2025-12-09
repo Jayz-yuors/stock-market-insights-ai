@@ -69,18 +69,30 @@ st.sidebar.markdown(
     unsafe_allow_html=True,
 )
 
-# ============== HEADER ==============
-# ============== SEO META TAGS ==============
-# Inject Essential SEO Meta Tags
-meta_tags = """
-<meta name="description" content="AI-powered stock insights with educational trading guidance. Analyze Nifty50 stocks with SMA, EMA, RSI, MACD, volatility & correlations.">
-<meta name="keywords" content="Stock Market India, Nifty50, Trading Education, Stock Analysis Tools, RSI, MACD, SMA, Volatility, Investing India">
-<meta property="og:title" content="AI Stock Insights & Learning Platform">
-<meta property="og:description" content="Learn stock trading indicators visually using AI-powered NSE analytics.">
-"""
+# ============== HEADER & SEO TAGS ==============
+st.markdown("""
+    <head>
+        <title>Stock Insights – Master the Market Step-by-Step</title>
+        <meta name="description" content="Learn stock market concepts with AI-powered Nifty50 analytics. Get price trends, technical indicators, risk, volatility, and correlation insights.">
+        <meta name="keywords" content="Nifty50, Stock Insights, Learn Investing, RSI, MACD, SMA, Volatility, Risk Analysis, Stock Forecasting, Finance Education">
+        <meta property="og:title" content="Master the Market Step-by-Step">
+        <meta property="og:description" content="Smart insights for smarter investing — powered by AI & real Nifty50 data.">
+        <meta property="og:type" content="website">
+    </head>
+""", unsafe_allow_html=True)
 
-st.markdown(meta_tags, unsafe_allow_html=True)
-
+# Visible UI header
+st.markdown(
+    f"""
+    <h1 style="text-align:center; font-size: 2.3rem; font-weight: 800; margin-bottom: -10px;">
+        Master the Market Step-by-Step
+    </h1>
+    <p style="text-align:center; font-size:1rem; color:rgba(148,163,184,0.95); margin-bottom:25px;">
+        Nifty50 Analytics — Smart Insights for Smarter Investing
+    </p>
+    """,
+    unsafe_allow_html=True,
+)
 # ============== AUTO UPDATE ==============
 @st.cache_resource(ttl=24 * 60 * 60)
 def silent_update():
@@ -507,6 +519,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
