@@ -442,6 +442,63 @@ with tab1:
 # ============== TAB 2 — Improved Abrupt Changes ==============
 with tab2:
     st.subheader("Sudden Price Jumps & Falls ✨")
+    # === TAB-2 INFO — Sudden Price Jumps & Falls ===
+    st.markdown("""
+    <div style="
+        background: rgba(255, 99, 71, 0.08);
+        border-left: 4px solid #ff5349;
+        padding: 14px 18px;
+        border-radius: 10px;
+        margin-top: 10px;
+        color: #ffd8d6;
+        font-size: 15px;
+        line-height: 1.55;
+    ">
+    
+    <h4>⚡ What causes sudden price swings?</h4>
+    • Earnings surprises 📊 (good or bad)<br>
+    • Breaking news affecting market sentiment 📰<br>
+    • Unusual trading volume / liquidity battles 📈📉<br>
+    • Institutional entry / exit (BIG moves) 🏦<br>
+    • Global economic triggers 🌍⚠️<br>
+    
+    <br>
+    
+    <h4>🚀 Bullish Price Shock Signals</h4>
+    • Strong upward candle with big volume 🔥<br>
+    • Possible breakout beginning — momentum building 💪<br>
+    • Good for spotting trending opportunities early ⚡<br>
+    
+    <br>
+    
+    <h4>📉 Bearish Crash Indicators</h4>
+    • Sharp fall → fear selling & high volatility 😨<br>
+    • Support level breakdown → trend reversal warning 🚨<br>
+    • Avoid heavy positions until stability returns 🛑<br>
+    
+    </div>
+    
+    <!-- Why This Matters -->
+    <div style="
+        background: rgba(255, 177, 0, 0.08);
+        border-left: 4px solid #ffb100;
+        padding: 14px 18px;
+        border-radius: 10px;
+        margin-top: 12px;
+        color: #ffe9c4;
+        font-size: 15px;
+        line-height: 1.55;
+    ">
+    <strong>🎯 Why this matters?</strong><br>
+    This section trains you to react <strong>smartly, not emotionally</strong>.<br>
+    Recognizing sudden price spikes helps you:<br>
+    ✔ avoid FOMO trades 🚫<br>
+    ✔ enter early on breakouts 📈<br>
+    ✔ exit timely before major crashes 📉<br><br>
+    When prices move fast — <strong>information is your shield</strong>.
+    </div>
+    """, unsafe_allow_html=True)
+
 
     threshold_pct = st.slider("Threshold (%)", 3, 20, 7) / 100
 
@@ -615,6 +672,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
