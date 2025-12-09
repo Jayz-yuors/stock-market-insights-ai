@@ -512,43 +512,45 @@ with tab2:
 # ============== TAB 3 — Risk View ==============
 with tab3:
     st.subheader("Volatility & Risk Index")
-    st.markdown(f"""
-    <!-- Risk Alerts Box -->
+    # ===== INFO BOX – Volatility & Risk Index =====
+    st.markdown("""
     <div style="
-        background:rgba(255, 50, 50, 0.10);
-        border-left:6px solid #ff4d4d;
+        background:linear-gradient(135deg, rgba(255,40,40,0.10), rgba(180,0,0,0.08));
+        padding:16px 18px;
         border-radius:10px;
-        padding:14px 18px;
-        color:{text_color};
-        font-size:14.4px;
-        line-height:1.45;
-        margin-bottom:16px;
+        border-left:4px solid #ff4d4d;
+        margin-bottom:10px;
+        color:#ffdddd;
     ">
-        <strong>🔺 Volatility signals uncertainty:</strong><br>
-        • Big price swings → market confusion or hype<br>
-        • Higher risk during aggressive buying/selling ⚡<br>
-        • Sudden spikes = instability / not reliable 📉<br><br>
-
-        <strong>📊 Measuring risk:</strong><br>
-        • Volatility Index (VIX-style fear indicator) 😨<br>
-        • Standard deviation → price instability levels 📐<br>
-        • Shorter periods → higher risk sensitivity 🚧<br>
+    <strong>⚡ Volatility means uncertainty:</strong><br>
+    • Big price swings → confusion / hype 😵‍💫<br>
+    • High risk during panic buying/selling 🔥<br>
+    • Sudden drops → instability warning 🚨<br>
     </div>
-
-    <!-- Why this matters -->
+    
     <div style="
-        margin-top:6px;
-        background:rgba(255, 120, 120, 0.09);
-        border-radius:8px;
-        padding:12px 16px;
-        border-left:4px solid #ff2e63;
-        color:{text_color};
-        font-size:14px;
-        line-height:1.45;
+        background:rgba(255,255,255,0.04);
+        padding:14px 18px;
+        border-radius:10px;
+        border-left:4px solid #ff9f43;
+        margin-bottom:10px;
+        color:#ffe9c7;
     ">
-        <strong>🎯 Why this matters?</strong><br>
-        Helps you decide <strong>when to avoid entering</strong> a stock or reduce exposure —
-        protecting capital when volatility rises 🚫💸.
+    <strong>📊 How we measure Risk:</strong><br>
+    • Volatility Index (fear indicator) 😬<br>
+    • Price variance → instability levels 📈<br>
+    • Shorter time periods → more sensitivity ⚠️<br>
+    </div>
+    
+    <div style="
+        background:rgba(255,255,255,0.03);
+        padding:14px 18px;
+        border-radius:10px;
+        border-left:4px solid #ffd166;
+        color:#fff7d6;
+    ">
+    <strong>🎯 Why this matters?</strong><br>
+    Volatility helps you judge **when to reduce position size** and **protect capital** when the market heats up 🔥💼.
     </div>
     """, unsafe_allow_html=True)
     window = st.slider("Volatility Window", 5, 55, 20)
@@ -566,69 +568,57 @@ with tab3:
 # ============== TAB 4 — Comparison View ==============
 with tab4:
     st.subheader("Compare Price Trends & Correlation")
-    st.markdown(f"""
-    <div style="
-        display:flex;
-        gap:18px;
-        margin-top:8px;
-        margin-bottom:18px;
-    ">
-
-        <!-- Card: Compare Trend -->
+    # ===== INFO BOX – Compare & Correlate =====
+    st.markdown("""
+    <div style="display:flex; gap:16px; flex-wrap:wrap;">
+    
+        <!-- Card 1 -->
         <div style="
             flex:1;
-            background:linear-gradient(135deg, #005bea55, #00c6fb44);
+            min-width:280px;
+            background:linear-gradient(145deg, #005bea44, #00c6fb44);
             border-radius:10px;
-            padding:14px 16px;
-            font-size:14.4px;
-            line-height:1.45;
-            color:{text_color};
+            padding:16px 20px;
+            color:#ddf7ff;
         ">
-            <strong>📈 Compare Price Movements</strong><br>
-            • See which stock performs stronger over time<br>
-            • Normalize prices = fair performance comparison<br>
-            • Spot winners vs laggards quickly 🏆📉
+            <strong>📈 Compare Price Movement</strong><br>
+            • Normalize prices → fair performance comparison 📊<br>
+            • Find strongest and weakest stocks quickly 🏅📉<br>
+            • Identify who is outperforming the market 🚀<br>
         </div>
-
-        <!-- Card: Correlation -->
+    
+        <!-- Card 2 -->
         <div style="
             flex:1;
-            background:linear-gradient(135deg, #b721ff44, #21d4fd44);
+            min-width:280px;
+            background:linear-gradient(145deg, #b721ff44, #21d4fd44);
             border-radius:10px;
-            padding:14px 16px;
-            font-size:14.4px;
-            line-height:1.45;
-            color:{text_color};
+            padding:16px 20px;
+            color:#f5eaff;
         ">
-            <strong>🧬 Correlation Insight</strong><br>
-            • Higher correlation → move together 🔗<br>
-            • Negative → hedge opportunities 🔄<br>
-            • Helps diversify with purpose 🎯
+            <strong>🔗 Correlation Insights</strong><br>
+            • Positive correlation → move together 🤝<br>
+            • Negative correlation → hedge opportunities 🔄<br>
+            • Great for **portfolio risk balancing** 🧠💼<br>
         </div>
-
+    
     </div>
-
-    <!-- Why this matters -->
+    
     <div style="
-        background:rgba(0,200,255,0.08);
-        border-radius:8px;
+        background:rgba(0,200,255,0.06);
         padding:12px 16px;
-        border-left:4px solid #00eaff;
-        color:{text_color};
-        font-size:14px;
-        line-height:1.45;
+        border-radius:10px;
+        border-left:4px solid #00c6fb;
+        margin-top:14px;
+        color:#c8f7ff;
     ">
-        <strong>🎯 Why this matters?</strong><br>
-        Enables smarter <strong>diversification</strong> and filters stocks that move
-        <strong>together vs independently</strong> — essential for balancing gains & risk ⚖️.
+    <strong>🎯 Why this matters?</strong><br>
+    Understanding correlation helps avoid **putting all eggs in one basket** — smart diversification = lower risk 📉🛡️.
     </div>
     """, unsafe_allow_html=True)
-
     if len(selected_companies) >= 2:
         merged = compare_companies(selected_companies, start_date, end_date)
-
         st.markdown("### 📈 Normalized Price Comparison")
-
         # Plotly Multi-Line Chart (Restored Correctly)
         fig = go.Figure()
         for ticker in selected_companies:
@@ -638,8 +628,6 @@ with tab4:
                 mode="lines",
                 name=ticker
             ))
-
-        
         fig.update_layout(
             xaxis_title="Date",
             yaxis_title="Normalized Price",
@@ -741,6 +729,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
