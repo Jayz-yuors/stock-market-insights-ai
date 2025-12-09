@@ -70,15 +70,17 @@ st.sidebar.markdown(
 )
 
 # ============== HEADER ==============
-st.markdown(
-    """
-    <h1>📊 Stock Insights</h1>
-    <p style='color:rgba(148,163,184,0.9); font-size:0.95rem;'>
-        Live Nifty50 analytics with MongoDB + Yahoo Finance integration.
-    </p>
-    """,
-    unsafe_allow_html=True
-)
+# ============== SEO META TAGS ==============
+st.markdown("""
+    <head>
+        <title>AI Stock Insights & Learning Platform | Nifty50 Analytics</title>
+        <meta name="description" content="AI-powered stock insights with educational guidance. Analyze Nifty50 stocks with indicators like RSI, MACD, SMA, risk, volatility & correlation.">
+        <meta name="keywords" content="Stock Market, Nifty50, AI Stock Analysis, Learn Trading, RSI, MACD, SMA, Volatility, Forecasting, Stock Correlation">
+        <meta property="og:title" content="AI-Powered Stock Insights & Learning Platform">
+        <meta property='og:description' content='Understand stock indicators with real-time NSE analytics & AI trends'>
+    </head>
+""", unsafe_allow_html=True)
+
 
 # ============== AUTO UPDATE ==============
 @st.cache_resource(ttl=24 * 60 * 60)
@@ -506,6 +508,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
