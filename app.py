@@ -443,59 +443,41 @@ with tab1:
 with tab2:
     st.subheader("Sudden Price Jumps & Falls ✨")
     # === TAB-2 INFO — Sudden Price Jumps & Falls ===
-    st.markdown("""
+    # 💡 Info Box (Right-Aligned)
+    st.markdown(f"""
     <div style="
-        background: rgba(255, 99, 71, 0.08);
-        border-left: 4px solid #ff5349;
-        padding: 14px 18px;
-        border-radius: 10px;
-        margin-top: 10px;
-        color: #ffd8d6;
-        font-size: 15px;
-        line-height: 1.55;
+        background:rgba(255,255,255,0.04);
+        border:1px solid rgba(0,180,216,0.25);
+        padding:14px 20px;
+        border-radius:10px;
+        text-align:right;
+        font-size:14.5px;
+        line-height:1.55;
+        color:{text_color};
+        margin-bottom:18px;
     ">
-    
-    <h4>⚡ What causes sudden price swings?</h4>
-    • Earnings surprises 📊 (good or bad)<br>
-    • Breaking news affecting market sentiment 📰<br>
-    • Unusual trading volume / liquidity battles 📈📉<br>
-    • Institutional entry / exit (BIG moves) 🏦<br>
-    • Global economic triggers 🌍⚠️<br>
-    
-    <br>
-    
-    <h4>🚀 Bullish Price Shock Signals</h4>
-    • Strong upward candle with big volume 🔥<br>
-    • Possible breakout beginning — momentum building 💪<br>
-    • Good for spotting trending opportunities early ⚡<br>
-    
-    <br>
-    
-    <h4>📉 Bearish Crash Indicators</h4>
-    • Sharp fall → fear selling & high volatility 😨<br>
-    • Support level breakdown → trend reversal warning 🚨<br>
-    • Avoid heavy positions until stability returns 🛑<br>
-    
+        ⚡ Sudden price swings often occur when <strong>breaking news</strong> impacts sentiment,
+        <strong>big institutions</strong> move money, or <strong>volume spikes sharply</strong>.<br><br>
+        🚀 Strong upward moves with high volume can signal <strong>early breakout momentum</strong>.<br><br>
+        📉 Sharp drops may indicate <strong>fear selling</strong>, <strong>high volatility</strong>,
+        or a <strong>trend reversal</strong> — stay alert.
     </div>
-    
+
     <!-- Why This Matters -->
     <div style="
-        background: rgba(255, 177, 0, 0.08);
-        border-left: 4px solid #ffb100;
-        padding: 14px 18px;
-        border-radius: 10px;
-        margin-top: 12px;
-        color: #ffe9c4;
-        font-size: 15px;
-        line-height: 1.55;
+        background:rgba(0,180,216,0.08);
+        border-left:4px solid #00b4d8;
+        padding:14px 18px;
+        border-radius:8px;
+        margin-top:8px;
+        color:#c9e8ff;
+        text-align:left;
+        font-size:14.5px;
+        line-height:1.55;
     ">
-    <strong>🎯 Why this matters?</strong><br>
-    This section trains you to react <strong>smartly, not emotionally</strong>.<br>
-    Recognizing sudden price spikes helps you:<br>
-    ✔ avoid FOMO trades 🚫<br>
-    ✔ enter early on breakouts 📈<br>
-    ✔ exit timely before major crashes 📉<br><br>
-    When prices move fast — <strong>information is your shield</strong>.
+        <strong>🎯 Why this matters?</strong><br>
+        Detecting these moves early helps identify <strong>breakout opportunities</strong>
+        or escape <strong>fast-falling trends</strong> before damage happens 🚀📉.
     </div>
     """, unsafe_allow_html=True)
 
@@ -672,6 +654,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
