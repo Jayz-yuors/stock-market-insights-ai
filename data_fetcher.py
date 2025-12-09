@@ -101,7 +101,10 @@ def insert_prices(df, ticker):
 
     inserted = 0
     for ts, row in df.iterrows():
-        trade_date = ts.to_pydatetime().date()
+        trade_date = ts.to_pydatetime()
+
+        # ensure BSON-compatible type
+        trade_date = trade_date.replace(tzinfo=None)
 
         doc = {
             "ticker": ticker,
@@ -120,7 +123,8 @@ def insert_prices(df, ticker):
         )
         inserted += 1
 
-    logging.info(f"{ticker}: 🔄 Inserted/updated {inserted} rows")
+    logging.info(f"{ticker}: 🔄 {inserted} rows inserted/updated")
+
 
 
 # --------------------------
@@ -149,3 +153,4 @@ def run_fetching():
         time.sleep(REQUEST_PAUSE_SEC)
 
     logging.info("✨ DB Sync Finished Successfully!")
+
