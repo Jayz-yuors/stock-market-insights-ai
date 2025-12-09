@@ -234,6 +234,28 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ============== TAB 1 — Price Trends + Indicators ==============
 with tab1:
     st.subheader("📈 Price Trend + Technical Indicators")
+    # === Info Box for Tab 1 ===
+    st.markdown("""
+    <div style="
+        background:rgba(0, 180, 216, 0.08);
+        border-left:6px solid #00b4d8;
+        padding:12px 16px;
+        border-radius:8px;
+        margin-top:4px;
+        margin-bottom:18px;
+        font-size:15px;
+        line-height:1.45;
+        color:#c9e8ff;
+    ">
+    <strong>What you can do here:</strong><br>
+    • View historical stock price movement over time 📈<br>
+    • Add Moving Averages (SMA/EMA) to understand trend direction 🔁<br>
+    • Analyze RSI & MACD to judge momentum & strength of price swings 💹<br>
+    • Identify patterns like uptrends, pullbacks & breakouts 🎯<br>
+    <br>
+    <b>Tip:</b> Shorter SMAs react faster (high volatility) while longer SMAs show stable trends.
+    </div>
+    """, unsafe_allow_html=True)
 
     view_mode = st.radio(
         "Indicator Display Mode",
@@ -517,6 +539,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
