@@ -753,41 +753,44 @@ with tab5:
     </div>
     """, unsafe_allow_html=True)
     st.caption("Educational purpose only — Not for financial decisions 📘")
-    for ticker in selected_companies:
-        df = fetch_prices(ticker)
-        if df is None or df.empty:
-            continue
-        df = compute_sma(df)  # keep old logic for this tab
-        col_close = get_close_price_column(df)
+    # === Minimal Stable Display for Selected Companies in Tab 5 ==
+        for ticker in selected_companies:
+            df = fetch_prices(ticker)
+            if df is None or df.empty:
+                continue
+        
+            df = compute_sma(df)
+            col_close = get_close_price_column(df)
+        
+            st.markdown(f"---\n### {ticker}")
+        
+            latest_price = df[col_close].iloc[-1]
+            st.metric("Latest Price", f"₹{latest_price:,.2f}")
+        
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=df["trade_date"], 
+                y=df[col_close], 
+                mode="lines", 
+                name="Close Price"
+            ))
+            fig.add_trace(go.Scatter(
+                x=df["trade_date"], 
+                y=df["SMA"], 
+                mode="lines", 
+                name="SMA"
+            ))
+        
+            fig.update_layout(
+                title=f"{ticker} — Price & SMA Trend",
+                xaxis_title="Date",
+                yaxis_title="Price (₹)",
+            )
+        
+            st.plotly_chart(fig, use_container_width=True)
+        
+        st.caption("This preview is only for learning — No forecast or trade signals shown in this section 📘")
 
-        conf, label, pct, vol = analyze_trend_confidence(df, col_close, horizon)
-        latest = df[col_close].iloc[-1]
-        shares = int(budget / latest)
-
-        st.markdown(f"---\n### {ticker}")
-        m1, m2, m3, m4 = st.columns(4)
-        m1.metric("Signal", label)
-        m2.metric("Confidence", f"{conf:.1f}%")
-        m3.metric("Trend %", f"{pct:+.2f}%")
-        m4.metric("Volatility", f"{vol:.2f}%")
-
-        st.caption(f"With {budget_label}, Approx shares: **{shares}**")
-
-        buy_future, sell_future = project_future(df, col_close, horizon)
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=df["trade_date"], y=df[col_close], mode="lines", name="Close"))
-        fig.add_trace(go.Scatter(x=df["trade_date"], y=df["SMA"], mode="lines", name="SMA"))
-        fig.add_trace(go.Scatter(x=buy_future["trade_date"], y=buy_future[col_close],
-                                 mode="markers", marker_color="green", name="Future Buy"))
-        fig.add_trace(go.Scatter(x=sell_future["trade_date"], y=sell_future[col_close],
-                                 mode="markers", marker_color="red", name="Future Sell"))
-
-        fig.update_layout(
-            title=f"{ticker} — Forecasted Buy/Sell Zones",
-            xaxis_title="Date",
-            yaxis_title="Price (₹)",
-        )
-        st.plotly_chart(fig, use_container_width=True)
 
         with st.expander("🔮 Forecasted Opportunities"):
             c1, c2 = st.columns(2)
@@ -802,6 +805,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
