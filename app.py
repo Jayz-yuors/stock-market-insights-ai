@@ -753,102 +753,89 @@ with tab5:
     </div>
     """, unsafe_allow_html=True)
     st.caption("Educational purpose only — Not for financial decisions 📘")
+    if "budget_vals" not in globals() or "budget_labels" not in globals():
+        budget_vals, budget_labels = build_budget_options()
+
+    if "budget" not in globals():
+        budget = budget_vals[4]  # Default mid-budget
+        budget_label = budget_labels[4]
+
+    if "horizon" not in globals():
+        horizon = "Short Term"
+
+    # === CONTROL WIDGETS ===
+    colA, colB, colC = st.columns(3)
+    with colA:
+        budget_label = st.selectbox("Budget", budget_labels, index=4)
+        budget = budget_vals[budget_labels.index(budget_label)]
+    with colB:
+        horizon = st.radio("Type", ["Short Term", "Long Term"], horizontal=True)
+    with colC:
+        forecast_window = 15 if horizon == "Short Term" else 60
+        st.metric("Forecast Window", f"{forecast_window} days")
+
+    st.caption("Based on trends — Not financial advice. Educational use only.")
+
+    # =========================
+    # RUN FORECAST PER TICKER
+    # =========================
     for ticker in selected_companies:
         df = fetch_prices(ticker)
         if df is None or df.empty:
             continue
-    
-        # Keep your original SMA logic
+
         df = compute_sma(df)
         col_close = get_close_price_column(df)
-    
-        # If you have 'horizon' radio above, keep using that, otherwise hardcode "Short Term"
-        try:
-            conf, label, pct, vol = analyze_trend_confidence(df, col_close, horizon)
-        except NameError:
-            # Fallback if horizon is not defined in this tab
-            conf, label, pct, vol = analyze_trend_confidence(df, col_close, "Short Term")
-    
+
+        conf, label, pct, vol = analyze_trend_confidence(df, col_close, horizon)
         latest = df[col_close].iloc[-1]
-        shares = int(budget / latest)
-    
+        shares = max(1, int(budget / latest))  # Prevent divide-by-zero crash
+
         st.markdown(f"---\n### {ticker}")
-        m1, m2, m3, m4 = st.columns(4)
-        m1.metric("Signal", label)
-        m2.metric("Confidence", f"{conf:.1f}%")
-        m3.metric("Trend %", f"{pct:+.2f}%")
-        m4.metric("Volatility", f"{vol:.2f}%")
-    
-        st.caption(f"With {budget_label}, Approx shares: **{shares}**")
-    
-        # ---- Future Projection (these MUST come before the expander) ----
-        buy_future, sell_future = project_future(df, col_close, "Short Term")
-    
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric("Signal", label)
+        col2.metric("Confidence", f"{conf:.1f}%")
+        col3.metric("Trend %", f"{pct:+.2f}%")
+        col4.metric("Volatility", f"{vol:.2f}%")
+
+        st.caption(f"With {budget_label}, Approx shares possible: **{shares}**")
+
+        # ---- Buy/Sell Projection ----
+        buy_future, sell_future = project_future(df, col_close, horizon)
+
         fig = go.Figure()
-        fig.add_trace(go.Scatter(
-            x=df["trade_date"],
-            y=df[col_close],
-            mode="lines",
-            name="Close"
-        ))
-        fig.add_trace(go.Scatter(
-            x=df["trade_date"],
-            y=df["SMA"],
-            mode="lines",
-            name="SMA"
-        ))
-    
+        fig.add_trace(go.Scatter(x=df["trade_date"], y=df[col_close], mode="lines", name="Close Price"))
+        fig.add_trace(go.Scatter(x=df["trade_date"], y=df["SMA"], mode="lines", name="SMA"))
+
         if buy_future is not None and not buy_future.empty:
-            fig.add_trace(go.Scatter(
-                x=buy_future["trade_date"],
-                y=buy_future[col_close],
-                mode="markers",
-                marker_color="green",
-                name="Future Buy"
-            ))
-    
+            fig.add_trace(go.Scatter(x=buy_future["trade_date"], y=buy_future[col_close],
+                                    mode="markers", name="Future Buy", marker_color="green"))
         if sell_future is not None and not sell_future.empty:
-            fig.add_trace(go.Scatter(
-                x=sell_future["trade_date"],
-                y=sell_future[col_close],
-                mode="markers",
-                marker_color="red",
-                name="Future Sell"
-            ))
-    
-        fig.update_layout(
-            title=f"{ticker} — Forecasted Buy/Sell Zones",
-            xaxis_title="Date",
-            yaxis_title="Price (₹)",
-        )
+            fig.add_trace(go.Scatter(x=sell_future["trade_date"], y=sell_future[col_close],
+                                    mode="markers", name="Future Sell", marker_color="red"))
+
+        fig.update_layout(title=f"{ticker} — Forecasted Buy/Sell Zones")
         st.plotly_chart(fig, use_container_width=True)
-    
-        # 🔮 This MUST stay INSIDE the for-loop, AFTER buy_future / sell_future
+
         with st.expander("🔮 Forecasted Opportunities"):
-            c1, c2 = st.columns(2)
-    
-            # Future Buy Data
-            c1.markdown("#### 🟢 Future Buy Opportunities")
+            buy_col, sell_col = st.columns(2)
+
+            buy_col.markdown("#### 🟢 Future Buy Opportunities")
             if buy_future is None or buy_future.empty:
-                c1.info("No future buy signals detected 🚫")
+                buy_col.info("No buy signals ahead 🚫")
             else:
-                c1.dataframe(
-                    buy_future[["trade_date", col_close]],
-                    use_container_width=True
-                )
-    
-            # Future Sell Data
-            c2.markdown("#### 🔴 Future Sell Opportunities")
+                buy_col.dataframe(buy_future[["trade_date", col_close]], use_container_width=True)
+
+            sell_col.markdown("#### 🔴 Future Sell Opportunities")
             if sell_future is None or sell_future.empty:
-                c2.info("No future sell signals detected 🚫")
+                sell_col.info("No sell signals detected 🚫")
             else:
-                c2.dataframe(
-                    sell_future[["trade_date", col_close]],
-                    use_container_width=True
-                )
+                sell_col.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+    
 
 
     
+
 
 
 
