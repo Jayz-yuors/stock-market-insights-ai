@@ -14,6 +14,7 @@ from calculations import (
     add_technical_indicators,
 )
 from data_fetcher import get_company_list, run_fetching , get_latest_date
+selected_companies = []
 sector_map = {
     "RELIANCE.NS": "Energy & Petrochemicals 🛢️",
     "HDFCBANK.NS": "Banking & Finance 🏦",
@@ -951,6 +952,7 @@ with tab5:
 
 
     
+
 
 
 
