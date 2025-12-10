@@ -139,6 +139,7 @@ def silent_update():
 with st.spinner("Syncing latest stock data…"):
     silent_update()
 # === FOOTER / DEVELOPER BANNER ===
+TODAY = date.today().strftime("%b %d, %Y")
 st.markdown(
     """
     <div style="
@@ -155,8 +156,11 @@ st.markdown(
            target="_blank" 
            style="color:#4dd6ff; text-decoration:none; font-weight:600;">
             Jay Keluskar
-        </a>
-        — 2025
+        </a> — 2025
+        <br><span style='font-size:13px; color:#9cdcff;'>
+            🔄 Updated daily at <strong>10:00 AM</strong> & <strong>11:00 PM IST</strong><br>
+            📅 Data available till: <strong>{TODAY}</strong>
+        </span>
     </div>
     """,
     unsafe_allow_html=True
@@ -938,6 +942,7 @@ with tab5:
 
 
     
+
 
 
 
