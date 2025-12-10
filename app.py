@@ -138,43 +138,7 @@ with st.spinner("Syncing latest stock data…"):
     silent_update()
 
 # formatted like: 09 Dec 2025 #
-last_updated_dates = []
-for ticker in selected_companies:
-    d = get_latest_date(ticker)
-    if d:
-        last_updated_dates.append(d)
 
-last_updated = (
-    max(last_updated_dates).strftime("%d %b %Y")
-    if last_updated_dates else "Unknown"
-)
-
-# === FOOTER / DEVELOPER BANNER ===
-st.markdown(
-    f"""
-    <div style="
-        text-align:center;
-        padding:10px;
-        margin-top:30px;
-        font-size:14px;
-        font-weight:500;
-        color:#a6fff5;
-        border-top:1px solid rgba(255,255,255,0.15);
-    ">
-        🚀 Developed with ❤️ by
-        <a href="https://www.linkedin.com/in/jay-keluskar-b17601358"
-           target="_blank"
-           style="color:#4dd6ff; text-decoration:none; font-weight:600;">
-           Jay Keluskar
-        </a> — 2025
-        <br><span style='font-size:13px; color:#9cdcff;'>
-            🔄 Updated daily at <strong>10:00 AM</strong> & <strong>11:00 PM IST</strong><br>
-            📅 Data available till: <strong style='color:#7afcff;'>{last_updated}</strong>
-        </span>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
 # ============== SIDEBAR FILTERS ==============
 company_list = get_company_list()
 if not company_list:
@@ -219,10 +183,46 @@ if end_date > TODAY:
 
 # Safe flag for downstream tabs
 date_valid = True
+
 # Show preview only if stocks are selected
 # ======= Sidebar Preview in Card Style ========
 # ===== Sidebar Preview (Stable Box Style) =====
+last_updated_dates = []
+for ticker in selected_companies:
+    d = get_latest_date(ticker)
+    if d:
+        last_updated_dates.append(d)
 
+last_updated = (
+    max(last_updated_dates).strftime("%d %b %Y")
+    if last_updated_dates else "Unknown"
+)
+# === FOOTER / DEVELOPER BANNER ===
+st.markdown(
+    f"""
+    <div style="
+        text-align:center;
+        padding:10px;
+        margin-top:30px;
+        font-size:14px;
+        font-weight:500;
+        color:#a6fff5;
+        border-top:1px solid rgba(255,255,255,0.15);
+    ">
+        🚀 Developed with ❤️ by
+        <a href="https://www.linkedin.com/in/jay-keluskar-b17601358"
+           target="_blank"
+           style="color:#4dd6ff; text-decoration:none; font-weight:600;">
+           Jay Keluskar
+        </a> — 2025
+        <br><span style='font-size:13px; color:#9cdcff;'>
+            🔄 Updated daily at <strong>10:00 AM</strong> & <strong>11:00 PM IST</strong><br>
+            📅 Data available till: <strong style='color:#7afcff;'>{last_updated}</strong>
+        </span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 if selected_companies:
     st.sidebar.markdown("""
     <div style="
@@ -952,6 +952,7 @@ with tab5:
 
 
     
+
 
 
 
