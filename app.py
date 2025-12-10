@@ -100,7 +100,29 @@ def silent_update():
 
 with st.spinner("Syncing latest stock data…"):
     silent_update()
-
+# === FOOTER / DEVELOPER BANNER ===
+st.markdown(
+    """
+    <div style="
+        text-align:center;
+        padding:10px;
+        margin-top:30px;
+        font-size:14px;
+        font-weight:500;
+        color:#a6fff5;
+        border-top:1px solid rgba(255,255,255,0.15);
+    ">
+        🚀 Developed with ❤️ by 
+        <a href="https://www.linkedin.com/in/jay-keluskar-b17601358" 
+           target="_blank" 
+           style="color:#4dd6ff; text-decoration:none; font-weight:600;">
+            Jay Keluskar
+        </a>
+        — 2025
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 # ============== SIDEBAR FILTERS ==============
 company_list = get_company_list()
 if not company_list:
@@ -835,6 +857,7 @@ with tab5:
 
 
     
+
 
 
 
