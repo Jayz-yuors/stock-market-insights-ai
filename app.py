@@ -753,8 +753,7 @@ with tab5:
     </div>
     """, unsafe_allow_html=True)
     st.caption("Educational purpose only — Not for financial decisions 📘")
-    # === Minimal Stable Display for Selected Companies in Tab 5 ==
-        for ticker in selected_companies:
+    for ticker in selected_companies:
             df = fetch_prices(ticker)
             if df is None or df.empty:
                 continue
@@ -790,8 +789,6 @@ with tab5:
             st.plotly_chart(fig, use_container_width=True)
         
         st.caption("This preview is only for learning — No forecast or trade signals shown in this section 📘")
-
-
         with st.expander("🔮 Forecasted Opportunities"):
             c1, c2 = st.columns(2)
             c1.markdown("#### 🟢 Future Buy Opportunities")
@@ -805,6 +802,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
