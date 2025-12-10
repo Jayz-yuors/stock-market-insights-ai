@@ -52,7 +52,7 @@ sector_map = {
     "TATASTEEL.NS": "Steel Manufacturing 🔩",
     "AMBUJACEM.NS": "Cement & Construction 🧱"
 }
-TODAY = date.today().strftime("%b %d, %Y")
+
 # ============== BASIC PAGE CONFIG ==============
 st.set_page_config(
     page_title="Stock Insights – Smart Nifty50 Analytics",
@@ -137,6 +137,15 @@ def silent_update():
 
 with st.spinner("Syncing latest stock data…"):
     silent_update()
+def get_latest_update_date():
+    db = get_db()
+    latest = db["stock_prices"].find_one(
+        sort=[("date", -1)],
+        projection={"date": 1, "_id": 0}
+    )
+    if latest and "date" in latest:
+        return latest["date"].strftime("%d %b %Y")  # formatted like: 09 Dec 2025
+    return "Unknown"
 # === FOOTER / DEVELOPER BANNER ===
 st.markdown(
     """
@@ -157,7 +166,7 @@ st.markdown(
         </a> — 2025
         <br><span style='font-size:13px; color:#9cdcff;'>
             🔄 Updated daily at <strong>10:00 AM</strong> & <strong>11:00 PM IST</strong><br>
-            📅 Data available till: <strong>{TODAY}</strong>
+            📅 Data available till: <strong>{last_updated}</strong>
         </span>
     </div>
     """,
@@ -940,6 +949,7 @@ with tab5:
 
 
     
+
 
 
 
