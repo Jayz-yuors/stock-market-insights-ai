@@ -665,12 +665,11 @@ with tab4:
 # ============== TAB 5 — Smart Insights ==============
 with tab5:
     st.subheader("🧠 Smart Insights, Opportunities & Forecast")
-
-    # === Educational Info Box Only ===
+    # === Educational Info Only ===
     st.markdown("### 📘 Understand AI-Driven Market Signals")
 
     col1, col2 = st.columns(2)
-
+    
     with col1:
         st.markdown("""
         <div style="
@@ -681,9 +680,9 @@ with tab5:
             color:#b9fff4;
             margin-bottom:12px;
         ">
-        <strong>🤖 AI Trend Confidence</strong><br>
-        • Automatically classifies Buy / Hold / Risky<br>
-        • Helps remove emotional decision making
+            <strong>🤖 AI Trend Confidence</strong><br>
+            • Tags a stock as Buy / Hold / Risky 🔎<br>
+            • Reduces emotional trading mistakes
         </div>
         """, unsafe_allow_html=True)
 
@@ -697,9 +696,9 @@ with tab5:
             color:#b9fff4;
             margin-bottom:12px;
         ">
-        <strong>📈 Future Price Tendency</strong><br>
-        • Projects short-term direction using trends<br>
-        • Improves timing for smarter entries
+            <strong>📈 Future Price Tendency</strong><br>
+            • Shows short-term directional pressure<br>
+            • Improves timing for smarter entries
         </div>
         """, unsafe_allow_html=True)
 
@@ -715,9 +714,9 @@ with tab5:
             color:#b9fff4;
             margin-bottom:12px;
         ">
-        <strong>🎯 Future Buy & Sell Zones</strong><br>
-        • See possible reversals before they occur<br>
-        • Avoid buying high and selling low
+            <strong>🎯 Buy & Sell Zones</strong><br>
+            • Shows where reversals are likely<br>
+            • Avoid buying tops and selling bottoms
         </div>
         """, unsafe_allow_html=True)
 
@@ -731,13 +730,13 @@ with tab5:
             color:#b9fff4;
             margin-bottom:12px;
         ">
-        <strong>💰 Share Affordability Estimate</strong><br>
-        • Understand what fits your investment<br>
-        • Builds discipline and budgeting skills
+            <strong>💰 Share Affordability</strong><br>
+            • Teaches sizing and discipline<br>
+            • Plan smarter investments
         </div>
         """, unsafe_allow_html=True)
 
-    # === Importance Box ===
+    # === Why it Matters Box ===
     st.markdown("""
     <div style="
         background:rgba(0,255,200,0.05);
@@ -747,13 +746,13 @@ with tab5:
         margin-top:6px;
         color:#a6fff5;
     ">
-    <strong>🎯 Why this matters?</strong><br>
-    Helps build **high-confidence predictions** and prevents
-    **FOMO or panic selling** — giving clarity on 
-    <strong>when to enter</strong> and <strong>when to exit</strong> like a smart investor.
+        <strong>🎯 Why this matters?</strong><br>
+        Builds <strong>high-confidence decisions</strong> and prevents
+        <strong>FOMO or panic selling</strong> — clarity on
+        <strong>when to enter</strong> & <strong>exit</strong> the market like a smart investor.
     </div>
     """, unsafe_allow_html=True)
-    st.caption("Educational insights only — Not for financial decisions 📘")
+    st.caption("Educational purpose only — Not for financial decisions 📘")
     for ticker in selected_companies:
         df = fetch_prices(ticker)
         if df is None or df.empty:
@@ -803,6 +802,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
