@@ -14,6 +14,44 @@ from calculations import (
     add_technical_indicators,
 )
 from data_fetcher import get_company_list, run_fetching
+sector_map = {
+    "RELIANCE.NS": "Energy & Petrochemicals 🛢️",
+    "HDFCBANK.NS": "Banking & Finance 🏦",
+    "TCS.NS": "IT & Technology 💻",
+    "BHARTIARTL.NS": "Telecom 📡",
+    "ICICIBANK.NS": "Banking & Finance 🏦",
+    "SBIN.NS": "Banking & Finance 🏦",
+    "INFY.NS": "IT & Technology 💻",
+    "HINDUNILVR.NS": "Consumer Goods 🏪",
+    "LICI.NS": "Insurance 🛡️",
+    "BAJFINANCE.NS": "Financial Services 💳",
+    "ITC.NS": "Diversified FMCG 🍃",
+    "LT.NS": "Infrastructure & Engineering 🏗️",
+    "MARUTI.NS": "Automobiles 🚗",
+    "HCLTECH.NS": "IT & Technology 💻",
+    "SUNPHARMA.NS": "Pharmaceuticals 💊",
+    "KOTAKBANK.NS": "Banking & Finance 🏦",
+    "M&M.NS": "Automobiles, Mobility 🚙",
+    "ULTRACEMCO.NS": "Cement & Building Material 🧱",
+    "AXISBANK.NS": "Banking & Finance 🏦",
+    "NTPC.NS": "Power Generation ⚡",
+    "TITAN.NS": "Luxury & Retail ⌚💍",
+    "BAJAJFINSV.NS": "Financial Services 💼",
+    "HAL.NS": "Defence & Aerospace ✈️",
+    "ONGC.NS": "Oil & Gas 🌍",
+    "ADANIPORTS.NS": "Logistics & Ports ⚓",
+    "BEL.NS": "Defence Electronics 🛰️",
+    "WIPRO.NS": "IT & Technology 💻",
+    "JSWSTEEL.NS": "Metals & Steel 🏭",
+    "TATAMOTORS.NS": "Automobiles 🚘",
+    "ASIANPAINT.NS": "Consumer Goods 🎨",
+    "COALINDIA.NS": "Mining & Commodities ⛏️",
+    "NESTLEIND.NS": "Food & Beverages 🍫",
+    "GRASIM.NS": "Materials & Chemicals 🧪",
+    "HINDALCO.NS": "Metals & Mining ⚒️",
+    "TATASTEEL.NS": "Steel Manufacturing 🔩",
+    "AMBUJACEM.NS": "Cement & Construction 🧱"
+}
 
 
 # ============== BASIC PAGE CONFIG ==============
@@ -167,6 +205,16 @@ if end_date > TODAY:
 
 # Safe flag for downstream tabs
 date_valid = True
+# Show preview only if stocks are selected
+if selected_companies:
+    st.sidebar.markdown("### 🏷️ Selected Stocks:")
+    for t in selected_companies:
+        sector = sector_map.get(t, "Sector Not Available ℹ️")
+        st.sidebar.markdown(f"• **{t}** — {sector}")
+# Date Preview
+st.sidebar.markdown("### 📅 Date Range:")
+st.sidebar.markdown(f"• From: **{start_date}**")
+st.sidebar.markdown(f"• To: **{end_date}**")
 
 
 # ============== Helper Functions ==============
@@ -856,6 +904,7 @@ with tab5:
 
 
     
+
 
 
 
