@@ -207,48 +207,49 @@ if end_date > TODAY:
 date_valid = True
 # Show preview only if stocks are selected
 # ======= Sidebar Preview in Card Style ========
-
-preview_box = f"""
-<div style="
-    background:rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.12);
-    border-radius:10px;
-    padding:14px 16px;
-    margin-top:15px;
-    font-size:15px;
-">
-    <h4 style="color:#00eaff; margin-bottom:10px;">
-        🏷️ Selected Stocks
-    </h4>
-"""
+# ===== Sidebar Preview (Stable Box Style) =====
 
 if selected_companies:
+    st.sidebar.markdown("""
+    <div style="
+        background:rgba(0,255,200,0.06);
+        border-left:4px solid #00ffc8;
+        padding:10px 14px;
+        border-radius:6px;
+        margin-top:14px;
+        color:#b9fff4;
+    ">
+    <strong>🏷️ Selected Stocks:</strong>
+    </div>
+    """, unsafe_allow_html=True)
+
     for t in selected_companies:
         sector = sector_map.get(t, "Sector Not Available ℹ️")
-        preview_box += f"""
-        <div style="margin-bottom:6px; color:#d4f2ff;">
-            • <strong>{t}</strong> — {sector}
-        </div>
-        """
+        st.sidebar.markdown(
+            f"<span style='color:#d9f7ff;'>• <strong>{t}</strong> — {sector}</span>",
+            unsafe_allow_html=True
+        )
 
-preview_box += """
-    <hr style="border:0.5px solid rgba(255,255,255,0.12); margin:10px 0;">
-    <h4 style="color:#00eaff; margin-bottom:6px;">
-        📅 Date Range
-    </h4>
-"""
+# Date Range Box
+st.sidebar.markdown("""
+<div style="
+    background:rgba(0,255,200,0.06);
+    border-left:4px solid #00ffc8;
+    padding:10px 14px;
+    border-radius:6px;
+    margin-top:14px;
+    color:#b9fff4;
+">
+<strong>📅 Date Range:</strong><br>
+""", unsafe_allow_html=True)
 
-preview_box += f"""
-    <div style="color:#d4f2ff;">
-        • From: <strong>{start_date}</strong><br>
-        • To: <strong>{end_date}</strong>
-    </div>
-</div>
-"""
+st.sidebar.markdown(
+    f"<span style='color:#d9f7ff;'>• From: <strong>{start_date}</strong></span><br>"
+    f"<span style='color:#d9f7ff;'>• To: <strong>{end_date}</strong></span>",
+    unsafe_allow_html=True,
+)
 
-st.sidebar.markdown(preview_box, unsafe_allow_html=True)
-
-
+st.sidebar.markdown("</div>", unsafe_allow_html=True)
 
 # ============== Helper Functions ==============
 def build_budget_options():
@@ -937,6 +938,7 @@ with tab5:
 
 
     
+
 
 
 
