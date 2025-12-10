@@ -52,8 +52,7 @@ sector_map = {
     "TATASTEEL.NS": "Steel Manufacturing 🔩",
     "AMBUJACEM.NS": "Cement & Construction 🧱"
 }
-
-
+TODAY = date.today().strftime("%b %d, %Y")
 # ============== BASIC PAGE CONFIG ==============
 st.set_page_config(
     page_title="Stock Insights – Smart Nifty50 Analytics",
@@ -139,7 +138,6 @@ def silent_update():
 with st.spinner("Syncing latest stock data…"):
     silent_update()
 # === FOOTER / DEVELOPER BANNER ===
-TODAY = date.today().strftime("%b %d, %Y")
 st.markdown(
     """
     <div style="
@@ -942,6 +940,7 @@ with tab5:
 
 
     
+
 
 
 
