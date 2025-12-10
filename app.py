@@ -13,7 +13,7 @@ from calculations import (
     compare_companies, get_close_price_column,
     add_technical_indicators,
 )
-from data_fetcher import get_company_list, run_fetching
+from data_fetcher import get_company_list, run_fetching , get_latest_date
 sector_map = {
     "RELIANCE.NS": "Energy & Petrochemicals 🛢️",
     "HDFCBANK.NS": "Banking & Finance 🏦",
@@ -137,17 +137,20 @@ def silent_update():
 
 with st.spinner("Syncing latest stock data…"):
     silent_update()
-def get_latest_update_date():
-    db = get_db()
-    latest = db["stock_prices"].find_one(
-        sort=[("date", -1)],
-        projection={"date": 1, "_id": 0}
-    )
-    if latest and "date" in latest:
-        return latest["date"].strftime("%d %b %Y")
-    return "Unknown"
-# formatted like: 09 Dec 2025
-    
+
+# formatted like: 09 Dec 2025 #
+last_updated_dates = []
+for ticker in selected_companies:
+    d = get_latest_date(ticker)
+    if d:
+        last_updated_dates.append(d)
+
+# Final date shown to user
+last_updated = (
+    max(last_updated_dates).strftime("%d %b %Y")
+    if last_updated_dates
+    else "Unknown"
+)
 # === FOOTER / DEVELOPER BANNER ===
 st.markdown(
     """
@@ -168,9 +171,8 @@ st.markdown(
         </a> — 2025
         <br><span style='font-size:13px; color:#9cdcff;'>
             🔄 Updated daily at <strong>10:00 AM</strong> & <strong>11:00 PM IST</strong><br>
-            📅 Data available till: <strong>{last_updated}</strong>
-        </span>
-    </div>
+            📅 Data available till: <strong style='color:#7afcff;'>{last_updated}</strong></p>
+</div>
     """,
     unsafe_allow_html=True
 )
@@ -951,6 +953,7 @@ with tab5:
 
 
     
+
 
 
 
