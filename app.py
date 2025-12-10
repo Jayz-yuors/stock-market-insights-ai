@@ -665,64 +665,40 @@ with tab4:
 # ============== TAB 5 — Smart Insights ==============
 with tab5:
 # ================= TAB 5 – Smart Insights Info Box ================= #
-    # ========== Header =========
     st.markdown("""
-    <h2 style='color:#00ffe0; text-align:left; font-weight:700;'>
-        🧠 Smart Insights, Opportunities & Forecast
-    </h2>
+    <div style="
+        background: rgba(0, 255, 200, 0.06);
+        border-left: 4px solid #00ffc8;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-top: 12px;
+        margin-bottom: 12px;
+    ">
+        <h3 style="color:#fafafa; margin:0 0 10px 0;">
+            🧠 Smart Insights, Opportunities & Forecast
+        </h3>
+
+        <p style="color:#b9fff4; font-size:15px; line-height:1.60;">
+            • Uses <strong>AI Trend Confidence</strong> to classify a stock as Buy / Hold / Risky <br>
+            • Shows <strong>future price movement tendency</strong> from recent trends<br>
+            • Marks <strong>probable Buy / Sell zones</strong> on chart before they happen<br>
+            • Estimates <strong>how many shares</strong> you can buy based on investment level<br>
+            • Helps improve <strong>timing and psychology</strong> in trading decisions<br>
+        </p>
+
+        <div style="border-top:1px solid rgba(0,255,200,0.25); margin:10px 0;"></div>
+
+        <p style="color:#7affec; font-size:16px; font-weight:600; margin:0;">
+            🎯 Why this matters?
+        </p>
+
+        <p style="color:#a6fff5; font-size:15px; margin:4px 0 0 0;">
+            Reduces emotional mistakes — you understand <strong>when to enter</strong> or
+            <strong>exit</strong> a stock with more confidence backed by data & AI insights.
+        </p>
+    </div>
     """, unsafe_allow_html=True)
-
-    smart_info = """
-<div style="
-    background:rgba(0,255,200,0.06);
-    border:1px solid rgba(0,255,200,0.25);
-    border-radius:12px;
-    padding:18px 20px;
-    margin-bottom:18px;
-">
-    <p style="color:#fafafa; font-size:17px; font-weight:600; margin:0 0 10px 0;">
-        🤖 What happens in Smart Insights?
-    </p>
-
-    <ul style="color:#c8fff8; font-size:15px; line-height:1.55; margin-top:0; list-style-position: inside;">
-        <li>Labels stock confidence → <strong>Buy / Hold / Risky</strong></li>
-        <li>Draws <strong>future price projections</strong> from trend math</li>
-        <li>Marks <strong>future Buy & Sell zones</strong> 📍</li>
-        <li>Calculates <strong>shares fitting your budget</strong> 💰</li>
-        <li>Improves <strong>entry & exit timing</strong> ⏱️</li>
-    </ul>
-
-    <div style="border-top:1px solid rgba(0,255,200,0.25); margin:10px 0;"></div>
-
-    <p style="color:#7affec; font-size:15px; font-weight:600; margin:0;">
-        🎯 Why this matters?
-    </p>
-
-    <p style="color:#a6fff5; font-size:15px; margin:4px 0 0 0;">
-        Prevents emotional trades — gives clarity on
-        when to <strong>enter</strong> and <strong>exit</strong> confidently.
-    </p>
-</div>
-"""
-    st.markdown(smart_info, unsafe_allow_html=True)
-    budget_vals, budget_labels = build_budget_options()
-    col_a, col_b, col_c = st.columns(3)
-    with col_a:
-        budget_label = st.selectbox("Budget", budget_labels, index=4, key="budget_select_tab5_unique")
-        budget = budget_vals[budget_labels.index(budget_label)]
-    with col_b:
-        horizon = st.radio("Type", ["Short Term", "Long Term"], horizontal=True, key="horizon_radio_tab5_unique")
-    with col_c:
-        forecast_window = 15 if horizon == "Short Term" else 60
-        st.metric("Forecast Window", f"{forecast_window} days", help="Prediction length")
-    st.caption("Educational visualization — Not financial advice 📘")
-    # ========== Forecast Logic ==========
-    # (YOUR EXISTING FORECAST LOOP GOES HERE, unchanged)
-    st.caption(
-        "Based on DB trends — Not financial advice. "
-        "Do not invest solely on this. Just for educational purpose!"
-    )
-
+    st.caption("Educational insights only — Not for financial decisions 📘")
     for ticker in selected_companies:
         df = fetch_prices(ticker)
         if df is None or df.empty:
@@ -772,6 +748,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
