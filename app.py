@@ -206,15 +206,48 @@ if end_date > TODAY:
 # Safe flag for downstream tabs
 date_valid = True
 # Show preview only if stocks are selected
+# ======= Sidebar Preview in Card Style ========
+
+preview_box = f"""
+<div style="
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-top:15px;
+    font-size:15px;
+">
+    <h4 style="color:#00eaff; margin-bottom:10px;">
+        🏷️ Selected Stocks
+    </h4>
+"""
+
 if selected_companies:
-    st.sidebar.markdown("### 🏷️ Selected Stocks:")
     for t in selected_companies:
         sector = sector_map.get(t, "Sector Not Available ℹ️")
-        st.sidebar.markdown(f"• **{t}** — {sector}")
-# Date Preview
-st.sidebar.markdown("### 📅 Date Range:")
-st.sidebar.markdown(f"• From: **{start_date}**")
-st.sidebar.markdown(f"• To: **{end_date}**")
+        preview_box += f"""
+        <div style="margin-bottom:6px; color:#d4f2ff;">
+            • <strong>{t}</strong> — {sector}
+        </div>
+        """
+
+preview_box += """
+    <hr style="border:0.5px solid rgba(255,255,255,0.12); margin:10px 0;">
+    <h4 style="color:#00eaff; margin-bottom:6px;">
+        📅 Date Range
+    </h4>
+"""
+
+preview_box += f"""
+    <div style="color:#d4f2ff;">
+        • From: <strong>{start_date}</strong><br>
+        • To: <strong>{end_date}</strong>
+    </div>
+</div>
+"""
+
+st.sidebar.markdown(preview_box, unsafe_allow_html=True)
+
 
 
 # ============== Helper Functions ==============
@@ -904,6 +937,7 @@ with tab5:
 
 
     
+
 
 
 
