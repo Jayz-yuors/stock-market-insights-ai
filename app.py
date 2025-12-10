@@ -128,8 +128,6 @@ st.markdown(f"""
         <div class="brand-sub">Nifty50 Analytics — Smart Insights for Smarter Investing</div>
     </div>
 """, unsafe_allow_html=True)
-
-
 # ============== AUTO UPDATE ==============
 @st.cache_resource(ttl=24 * 60 * 60)
 def silent_update():
@@ -953,6 +951,7 @@ with tab5:
 
 
     
+
 
 
 
