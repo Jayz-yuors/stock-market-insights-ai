@@ -197,6 +197,43 @@ last_updated = (
     max(last_updated_dates).strftime("%d %b %Y")
     if last_updated_dates else "Unknown"
 )
+stale_msgs = []
+today = datetime.now().date()
+for t in selected_companies:
+    d = get_latest_date(t)
+    if d:
+        delay = (today - d).days
+        if delay >= 2:  # Show only if 2+ day delay
+            icon = "🚨" if delay > 5 else "⚠️"
+            stale_msgs.append(f"{icon} <strong>{t}</strong> — {delay} days ago")
+if stale_msgs:
+    # 🟠 Warning Box if delay detected
+    msg_html = "<br>".join(stale_msgs)
+    st.sidebar.markdown(f"""
+    <div style="
+        background:rgba(255,180,0,0.12);
+        border-left:4px solid #ffae00;
+        padding:12px 14px;
+        border-radius:8px;
+        margin-top:20px;
+        color:#ffe7c4;">
+        <strong>⚠ Update Delay Detected</strong><br>
+        <span style='font-size:13px;'>{msg_html}</span>
+    </div>
+    """, unsafe_allow_html=True)
+else:
+    # 🟢 Success Box if everything fresh
+    st.sidebar.markdown(f"""
+    <div style="
+        background:rgba(0,255,140,0.10);
+        border-left:4px solid #00ff9d;
+        padding:12px 14px;
+        border-radius:8px;
+        margin-top:20px;
+        color:#baffdd;">
+        ✨ All selected stocks are updated till the latest available date!
+    </div>
+    """, unsafe_allow_html=True)
 # === FOOTER / DEVELOPER BANNER ===
 st.markdown(
     f"""
@@ -952,6 +989,7 @@ with tab5:
 
 
     
+
 
 
 
