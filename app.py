@@ -753,7 +753,7 @@ with tab5:
     </div>
     """, unsafe_allow_html=True)
     st.caption("Educational purpose only — Not for financial decisions 📘")
-        for ticker in selected_companies:
+    for ticker in selected_companies:
         df = fetch_prices(ticker)
         if df is None or df.empty:
             continue
@@ -847,7 +847,9 @@ with tab5:
                     use_container_width=True
                 )
 
+
     
+
 
 
 
