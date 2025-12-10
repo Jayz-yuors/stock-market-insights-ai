@@ -128,14 +128,6 @@ company_list = get_company_list()
 if not company_list:
     st.error("⚠ No tickers found in DB — run insert_companies first!")
     st.stop()
-st.markdown("""
-#### 📌 Company Selection Help
-<span style="color:#b9fff4; font-size:14px;">
-• Choose 1–3 stocks you want to analyze ✨  
-• Compare performance trends across companies 🔍  
-• Type to search symbols like <strong>RELIANCE.NS</strong> or <strong>HDFCBANK.NS</strong>
-</span>
-""", unsafe_allow_html=True)
 selected_companies = st.sidebar.multiselect(
     "Select Company Tickers",
     options=company_list,
@@ -864,6 +856,7 @@ with tab5:
 
 
     
+
 
 
 
