@@ -664,37 +664,35 @@ with tab4:
 
 # ============== TAB 5 — Smart Insights ==============
 with tab5:
-# ================= TAB 5 – Smart Insights Info Box ================= #
     st.markdown("""
     <div style="
-        background: rgba(0, 255, 200, 0.06);
+        background: rgba(0,255,200,0.06);
         border-left: 4px solid #00ffc8;
         border-radius: 10px;
-        padding: 14px 18px;
+        padding: 16px 20px;
         margin-top: 12px;
         margin-bottom: 12px;
     ">
-        <h3 style="color:#fafafa; margin:0 0 10px 0;">
+        <h3 style="color:#fafafa; margin:0 0 12px 0;">
             🧠 Smart Insights, Opportunities & Forecast
         </h3>
 
-        <p style="color:#b9fff4; font-size:15px; line-height:1.60;">
-            • Uses <strong>AI Trend Confidence</strong> to classify a stock as Buy / Hold / Risky <br>
-            • Shows <strong>future price movement tendency</strong> from recent trends<br>
-            • Marks <strong>probable Buy / Sell zones</strong> on chart before they happen<br>
-            • Estimates <strong>how many shares</strong> you can buy based on investment level<br>
-            • Helps improve <strong>timing and psychology</strong> in trading decisions<br>
-        </p>
+        <ul style="color:#b9fff4; font-size:15px; line-height:1.60; margin:0;">
+            <li>Uses <strong>AI Trend Confidence</strong> to tag a stock as Buy / Hold / Risky 🔎</li>
+            <li>Shows possible <strong>future direction</strong> using trend math 📈</li>
+            <li>Highlights <strong>future Buy / Sell zones</strong> ahead of time 🎯</li>
+            <li>Estimates <strong>shares you can afford</strong> based on typical budgets 💰</li>
+            <li>Improves <strong>timing & trading psychology</strong> — avoid FOMO & panic 😌</li>
+        </ul>
 
-        <div style="border-top:1px solid rgba(0,255,200,0.25); margin:10px 0;"></div>
+        <div style="border-top:1px solid rgba(0,255,200,0.25); margin:12px 0;"></div>
 
         <p style="color:#7affec; font-size:16px; font-weight:600; margin:0;">
             🎯 Why this matters?
         </p>
-
-        <p style="color:#a6fff5; font-size:15px; margin:4px 0 0 0;">
-            Reduces emotional mistakes — you understand <strong>when to enter</strong> or
-            <strong>exit</strong> a stock with more confidence backed by data & AI insights.
+        <p style="color:#a6fff5; font-size:15px; margin:6px 0 0 0;">
+            Helps make <strong>high-confidence decisions</strong> and avoid emotional buying or selling —
+            giving clarity on <strong>when to enter</strong> or <strong>exit</strong> the market like a pro 📘.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -748,6 +746,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
