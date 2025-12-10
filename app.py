@@ -787,9 +787,8 @@ with tab5:
             )
         
             st.plotly_chart(fig, use_container_width=True)
-        
         st.caption("This preview is only for learning — No forecast or trade signals shown in this section 📘")
-        with st.expander("🔮 Forecasted Opportunities"):
+    with st.expander("🔮 Forecasted Opportunities"):
             c1, c2 = st.columns(2)
             c1.markdown("#### 🟢 Future Buy Opportunities")
             if buy_future is None or buy_future.empty:
@@ -802,6 +801,7 @@ with tab5:
                 c2.info("No future sell signals detected 🚫")
             else:
                 c2.dataframe(sell_future[["trade_date", col_close]], use_container_width=True)
+
 
 
 
