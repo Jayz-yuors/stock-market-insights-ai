@@ -144,8 +144,10 @@ def get_latest_update_date():
         projection={"date": 1, "_id": 0}
     )
     if latest and "date" in latest:
-        return latest["date"].strftime("%d %b %Y")  # formatted like: 09 Dec 2025
-    return "Unknown"
+        return latest["date"].strftime("%d %b %Y")
+    return "Unknown"
+# formatted like: 09 Dec 2025
+    
 # === FOOTER / DEVELOPER BANNER ===
 st.markdown(
     """
@@ -949,6 +951,7 @@ with tab5:
 
 
     
+
 
 
 
