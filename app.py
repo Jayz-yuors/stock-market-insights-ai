@@ -246,7 +246,7 @@ st.markdown(
         color:#a6fff5;
         border-top:1px solid rgba(255,255,255,0.15);
     ">
-        🚀 Developed with ❤️ by
+        🚀 Developed by
         <a href="https://www.linkedin.com/in/jay-keluskar-b17601358"
            target="_blank"
            style="color:#4dd6ff; text-decoration:none; font-weight:600;">
@@ -989,6 +989,7 @@ with tab5:
 
 
     
+
 
 
 
